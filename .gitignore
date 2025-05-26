@@ -1,0 +1,23 @@
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+
+# Ignore environment files
+.env
+
+# dont upload private data
+static/private
+
+
+# Ignore log files
+*.log
+
+# Ignore virtual environments
+venv/
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore database files
+*.sqlite3
+
