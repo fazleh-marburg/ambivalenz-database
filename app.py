@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify,request
 from neo4j import GraphDatabase
 import os
 
@@ -34,9 +34,28 @@ def nodes():
 def sections():
     return render_template('sections.html')  # or any logic here
 
-@app.route('/visual_art')
+@app.route('/visual_art',methods=["GET", "POST"])
 def visual_art():
-    return render_template("visual_art.html")
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template("visual_art.html", keys=keys, records=records, error=error, query=submitted_query)
+
+    #    return render_template("visual_art.html")
+
+#@app.route("/visual_art", methods=["GET", "POST"])  MATCH (n) RETURN n LIMIT 5
+#def query():
+    #    keys, records, error, submitted_query = [], [], None, ""
+
+    #    if request.method == "POST":
+    #        submitted_query = request.form.get("cypher_query")
+    #        keys, records, error = run_cypher_query(submitted_query)
+
+#    return render_template("visual_art.html", keys=keys, records=records, error=error, query=submitted_query)
+
 
 @app.route('/audio')
 def audio():
@@ -112,6 +131,15 @@ def project_detail():
     return "Welcome to the Project Detail page!"
 
 
+def run_cypher_query(cypher_query):
+    with driver.session() as session:
+        try:
+            result = session.run(cypher_query)
+            keys = result.keys()
+            records = [record.data() for record in result]
+            return keys, records, None
+        except Exception as e:
+            return [], [], str(e)
 
 
 
