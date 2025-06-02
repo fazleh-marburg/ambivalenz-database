@@ -113,6 +113,10 @@ def contact():
 def politics_of_photography():
     return render_template('politics_of_photography.html')  # or return some content
 
+@app.route('/Individual_page')
+def Individual_page():
+    return render_template('Individual_page.html')
+
 @app.route('/supporters/')
 def supporters():
     return '<h1>Supporters Page</h1>'
@@ -129,6 +133,7 @@ def privacy():
 def project_detail():
     # You can render a template or just return a string here
     return "Welcome to the Project Detail page!"
+
 
 
 def run_cypher_query(cypher_query):
