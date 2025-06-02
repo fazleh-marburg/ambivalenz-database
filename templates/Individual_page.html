@@ -122,6 +122,14 @@
             text-decoration-thickness: 3px;
             /* thicker on hover */
         }
+        h2 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333333;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
     </style>
 
 
@@ -142,7 +150,7 @@
 
 
 
-        <h1 id="header-title">Zwei Zigeuner</h1>
+        <h1 id="header-title">Ilonka</h1>
 
         <div id="header-tools">
             <a id="search" href=href="http://127.0.0.1:5000/search/">
@@ -301,6 +309,22 @@
     </div>
 
 
+    <div>
+                <form class="filters" action="" method="get">
+                    <select name="section">
+                        <option value="" selected="selected">Informationen</option>
+                        <option value="Objekt_Informationen">1. Objektinformationen</option>
+                        <option value="Inhaltliche_Beschreibung"> 2. Inhaltliche Beschreibung</option>
+                        <option value="Semantische_Annotation"> 3. Semantische Annotation</option>
+                        <option value="Semantische_Relationen"> 4. Semantische Relationen</option>
+                        <option value="Technische_rechtliche"> 5. Technische and rechtliche</option>
+                    </select>
+
+                </form>
+            </div>
+
+
+
     <div class="container">
         <img class="portrait" srcset="{{ url_for('static', filename='private/Ilonka.png') }} 1x,
                {{ url_for('static', filename='private/Ilonka.png') }} 2x" src="{{ url_for('static', filename='private/Ilonka.png') }}" width="400" height="400" alt="Portrait of Ilonka">
@@ -312,6 +336,7 @@
     </div>
 
 
+    <h2>| 1. Objektinformationen |</h2>
     <table class="property-table">
         <thead>
             <tr>

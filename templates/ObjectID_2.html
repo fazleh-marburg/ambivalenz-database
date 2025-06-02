@@ -41,8 +41,8 @@
         }
 
         .portrait {
-            width: 600px;
-            height: 500px;
+            width: 400px;
+            height: 400px;
             /* increased height */
             object-fit: cover;
             border-radius: 8px;
@@ -57,6 +57,8 @@
             padding: 20px;
             border-radius: 8px;
             box-sizing: border-box;
+            font-size: 18px;
+            /* adjust as needed */
             /* includes padding in width */
         }
     </style>
@@ -74,7 +76,7 @@
             width: 60%;
             margin: 0 auto;
             border-collapse: collapse;
-            border: 2px solid black;
+            /* border: 2px solid black; */
             /* border around the whole table */
             background-color: white;
         }
@@ -97,6 +99,30 @@
         }
     </style>
 
+    <style>
+        .property-table {
+            font-size: 16px;
+            /* adjust as needed */
+        }
+    </style>
+
+    <style>
+        .property-table a {
+            color: #0645AD;
+            /* Wikipedia blue */
+            text-decoration: underline;
+            /* always underlined */
+            text-decoration-color: #0645AD;
+            /* blue underline */
+            text-decoration-thickness: 2px;
+            /* thicker underline */
+        }
+
+        .property-table a:hover {
+            text-decoration-thickness: 3px;
+            /* thicker on hover */
+        }
+    </style>
 
 
 </head>
@@ -116,7 +142,7 @@
 
 
 
-        <h1 id="header-title">Zwei Zigeuner</h1>
+        <h1 id="header-title">Ilonka</h1>
 
         <div id="header-tools">
             <a id="search" href=href="http://127.0.0.1:5000/search/">
@@ -286,7 +312,7 @@
     </div>
 
 
-    <table>
+    <table class="property-table">
         <thead>
             <tr>
                 <th>
@@ -329,7 +355,11 @@
             </tr>
             <tr>
                 <td><strong>Sammlung / Archiv / Fundort</strong></td>
-                <td>Museum Ludwig, Köln</td>
+                <td>
+                    <a href="https://de.wikipedia.org/wiki/Museum_Ludwig" target="_blank">
+                        Museum Ludwig (Köln)
+                    </a>
+                </td>
             </tr>
             <tr>
                 <td><strong>Provenienz</strong></td>
@@ -366,6 +396,39 @@
 
     <!-- New lines after the table -->
     <br><br><br>
+  <nav class="pagination">
+                <span class="step-links">
+                    <span class="current-page">1</span>
+
+                    /
+                    <a href="http://127.0.0.1:5000/en/collection/i/?page=2">2</a>
+
+                    /
+                    <span class="dotdotdot">...</span>
+
+                    /
+                    <a class="next" href="http://127.0.0.1:5000/en/collection/i/?page=2">
+                        <span>next</span>
+                        <img src="Archive_files/slider-next.svg">
+                    </a>
+
+
+                </span>
+            </nav>
+
+<footer class="site">
+
+        <div class="footer-title">Antiziganismus und Ambivalenz in Europa</div>
+
+        <nav class="footer">
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('supporters') }}">Supporters</a>
+            <a href="{{ url_for('imprint') }}">Imprint</a>
+            <a href="{{ url_for('privacy') }}">Privacy statement</a>
+        </nav>
+
+    </footer>
+
 
     <script>
         document.querySelectorAll('.filters select').forEach(function(element) {
@@ -374,8 +437,6 @@
             })
         });
     </script>
-
-
 
 
 </body>
