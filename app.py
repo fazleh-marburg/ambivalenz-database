@@ -113,9 +113,15 @@ def contact():
 def politics_of_photography():
     return render_template('politics_of_photography.html')  # or return some content
 
-@app.route('/Individual_page')
+@app.route('/visual_art/Individual_page')
 def Individual_page():
     return render_template('Individual_page.html')
+
+
+@app.route('/visual_art/Individual_page_2')
+def Individual_page_2():
+    return render_template('Individual_page_2.html')
+
 
 @app.route('/supporters/')
 def supporters():
