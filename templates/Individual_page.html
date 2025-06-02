@@ -61,11 +61,7 @@
             /* adjust as needed */
             /* includes padding in width */
         }
-    </style>
 
-
-
-    <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
@@ -97,23 +93,31 @@
         tr:nth-child(even) {
             background-color: #f5f5f5;
         }
-        .left-align { text-align: left;
+
+        .left-align {
+            text-align: left;
         }
-        .right-align { text-align: right;
+
+        .right-align {
+            text-align: right;
         }
-         .center-align {
+
+        .center-align {
             text-align: center;
         }
-    </style>
-
-    <style>
+        .col1 {
+            width: 400px; /* width of first column */
+        }
+        .col2 {
+            width: 800px; /* width of second column */
+        }
+        .row-height {
+            height: 60px; /* height of row */
+        }
         .property-table {
             font-size: 16px;
             /* adjust as needed */
         }
-    </style>
-
-    <style>
         .property-table a {
             color: #0645AD;
             /* Wikipedia blue */
@@ -129,14 +133,14 @@
             text-decoration-thickness: 3px;
             /* thicker on hover */
         }
-        h2 {
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: #333333;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
 
+        h2 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
     </style>
 
 
@@ -317,29 +321,28 @@
 
 
     <div>
-                <form class="filters" action="" method="get">
-                    <select name="section">
-                        <option value="" selected="selected">Informationen</option>
-                        <option value="Objekt_Informationen">1. Objektinformationen</option>
-                        <option value="Inhaltliche_Beschreibung"> 2. Inhaltliche Beschreibung</option>
-                        <option value="Semantische_Annotation"> 3. Semantische Annotation</option>
-                        <option value="Semantische_Relationen"> 4. Semantische Relationen</option>
-                        <option value="Technische_rechtliche"> 5. Technische and rechtliche</option>
-                    </select>
+        <form class="filters" action="" method="get">
+            <select name="section">
+                <option value="" selected="selected">Informationen</option>
+                <option value="Objekt_Informationen">1. Objektinformationen</option>
+                <option value="Inhaltliche_Beschreibung"> 2. Inhaltliche Beschreibung</option>
+                <option value="Semantische_Annotation"> 3. Semantische Annotation</option>
+                <option value="Semantische_Relationen"> 4. Semantische Relationen</option>
+                <option value="Technische_rechtliche"> 5. Technische and rechtliche</option>
+            </select>
 
-                </form>
-            </div>
+        </form>
+    </div>
 
 
 
     <div class="container">
         <img class="portrait" srcset="{{ url_for('static', filename='private/Ilonka.png') }} 1x,
-                                      {{ url_for('static', filename='private/Ilonka.png') }} 2x"
-                                 src="{{ url_for('static', filename='private/Ilonka.png') }}" width="400" height="400" alt="Portrait of Ilonka">
+                                      {{ url_for('static', filename='private/Ilonka.png') }} 2x" src="{{ url_for('static', filename='private/Ilonka.png') }}" width="400" height="400" alt="Portrait of Ilonka">
 
         <div class="text">
             <p>
-                Fremdbild vs. Selbstpräsenz: Ilonka wird mit Attributen der „Zigeunerin“ ausgestattet: dunkle Kleidung, Goldschmuck, sinnlicher Blick  Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
+                Fremdbild vs. Selbstpräsenz: Ilonka wird mit Attributen der „Zigeunerin“ ausgestattet: dunkle Kleidung, Goldschmuck, sinnlicher Blick Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
             </p>
         </div>
     </div>
@@ -349,7 +352,7 @@
     <table class="property-table">
         <thead>
             <tr>
-                <th>
+                <th class="row-height">
                     <p style="color: #333333;">
                         <strong>Property</strong>
                     </p>
@@ -359,70 +362,70 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="left-align"><strong>Objekt-ID</strong></td>
-                <td class="left-align">2</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Objekt-ID</strong></td>
+                <td class="col2" class="left-align">2</td>
             </tr>
             <tr>
-                <td class="left-align"> <strong>Titel</strong></td>
-                <td class="left-align">Ilonka</td>
+                <td class="col1" class="left-align"> <strong>Titel</strong></td>
+                <td class="col2" class="left-align">Ilonka</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Objekttyp / Medium / Technik</strong></td>
-                <td class="left-align">Öl auf Leinwand, Maße 135 × 100 cm</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Objekttyp / Medium / Technik</strong></td>
+                <td class="col2" class="left-align">Öl auf Leinwand, Maße 135 × 100 cm</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Entstehungsdatum</strong></td>
-                <td class="left-align">1932</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Entstehungsdatum</strong></td>
+                <td class="col2" class="left-align">1932</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Entstehungsort</strong></td>
-                <td class="left-align">Land / Stadt / Region ?</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Entstehungsort</strong></td>
+                <td class="col2" class="left-align">Land / Stadt / Region ?</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Autor*in / Künstler*in / Regisseur*in</strong></td>
-                <td class="left-align">Name (ggf. mit Lebensdaten): Max Beckmann (Max Carl Friedrich Beckman</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Autor*in / Künstler*in / Regisseur*in</strong></td>
+                <td class="col2" class="left-align">Name (ggf. mit Lebensdaten): Max Beckmann (Max Carl Friedrich Beckman</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Beteiligte / Sichtbare Personen</strong></td>
-                <td class="left-align">Name (ggf. mit Lebensdaten) Ilonka (name der Abgebildeten Romni)</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Beteiligte / Sichtbare Personen</strong></td>
+                <td class="col2" class="left-align">Name (ggf. mit Lebensdaten) Ilonka (name der Abgebildeten Romni)</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Sammlung / Archiv / Fundort</strong></td>
-                <td class="left-align">
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Sammlung / Archiv / Fundort</strong></td>
+                <td class="col2" class="left-align">
                     <a href="https://de.wikipedia.org/wiki/Museum_Ludwig" target="_blank">
                         Museum Ludwig (Köln)
                     </a>
                 </td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Provenienz</strong></td>
-                <td class="left-align">1954-1957, Lilly von Schnitzler-Mallinckrodt, Murnau (Kreis Garmisch-Partenkirchen)
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Provenienz</strong></td>
+                <td class="col2" class="left-align">1954-1957, Lilly von Schnitzler-Mallinckrodt, Murnau (Kreis Garmisch-Partenkirchen)
                     1957-1976, Wallraf-Richartz-Museum & Fondation Corboud, Köln, Inv.-Nr.: WRM 3015 (Ankauf 1957)
                     1954 Ankauf Lilly von Schnitzler aus dem Nachlass Beckmann. 1957 erworben aus der Sammlung Lilly von Schnitzler-Malinckrodt, Murnau.</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Literatur</strong></td>
-                <td class="left-align">Beckmann, Max, Winterthur 1938, Kat-Nr. 7 hrsg. v. Kunsthalle Winterthur 1938 Beckmann, Max, Zürich 1955, Kat-Nr. 63 hrsg. v. Kunsthalle Basel Basel 1956</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Literatur</strong></td>
+                <td class="col2" class="left-align">Beckmann, Max, Winterthur 1938, Kat-Nr. 7 hrsg. v. Kunsthalle Winterthur 1938 Beckmann, Max, Zürich 1955, Kat-Nr. 63 hrsg. v. Kunsthalle Basel Basel 1956</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Ausstellungen</strong></td>
-                <td class="left-align">Max Beckmann, 1932 Berlin, Galerie Alfred Flechtheim / 1938 Winterthur, Kunstverein/ 22.11.1955-08.01.1956 Zürich, Kunsthaus</td>
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Ausstellungen</strong></td>
+                <td class="col2" class="left-align">Max Beckmann, 1932 Berlin, Galerie Alfred Flechtheim / 1938 Winterthur, Kunstverein/ 22.11.1955-08.01.1956 Zürich, Kunsthaus</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Beschriftung</strong></td>
-                <td class="left-align">Signatur, Vorderseite (links oben): Beckmann F. 32
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Beschriftung</strong></td>
+                <td class="col2" class="left-align">Signatur, Vorderseite (links oben): Beckmann F. 32
                     Aufkleber, Rückseite, oben links, auf dem Rahmen: BUCHHOL GALLERY / CURT VALENTIN / 32 EAST 57th STREET, NEW YORK. / TITLE & YEAR Gypsy. 1932 / ARTIST Max Beckmann / MEDIUM & / SIZE Oil 53 1/2 X 39 3/4 " / NO. / 11296 / Oui [handschritfliche Notiz]</td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Werkkommentar (Museum Ludwig, Köln)</strong></td>
-                <td class="left-align">Kurz nach Entstehen wurde das Bild mit dem Titel „Ilonka“ ausgestellt. Offensichtlich handelt es sich um ein Porträt. Eine Zeichnung des wahrscheinlich selben Modells (heute Art Institute Chicago, Inv-Nr. 1989.169), ist ebenfalls Ilonka betitelt. Sie wurde 1955 bei Theo Hill, Köln unter diesem Titel ausgestellt. (Vgl. Kat. Hill, S. 14) Das WVZ Göpel 1979 erwähnt zwei Stellen aus Beckmanns Tagebuch von 1945, in denen Beckmann auf das Bild, das er in einer Amsterdamer Ausstellung sah, mit „Zigeunerin✶✶“ referiert. Göpel erwähnt auch die Zeichnung Ilonka, ohne daraus einen Rückschluss auf den Titel zu ziehen. Im Zuge einer Prüfung von Bildtiteln auf rassistische Bezeichnungen, haben wir entschieden, den ersten Titel Ilonka wiederherzustellen und auf den späteren Titel Zigeunerin✶✶ II zu verzichten. Barbara Tiedemann und Siegfried Gohr, die das aktuelle Werkverzeichnis zu Beckmann bearbeiten, werden das Werk ebenfalls unter dem Titel Ilonka führen.
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Werkkommentar (Museum Ludwig, Köln)</strong></td>
+                <td class="col2" class="left-align">Kurz nach Entstehen wurde das Bild mit dem Titel „Ilonka“ ausgestellt. Offensichtlich handelt es sich um ein Porträt. Eine Zeichnung des wahrscheinlich selben Modells (heute Art Institute Chicago, Inv-Nr. 1989.169), ist ebenfalls Ilonka betitelt. Sie wurde 1955 bei Theo Hill, Köln unter diesem Titel ausgestellt. (Vgl. Kat. Hill, S. 14) Das WVZ Göpel 1979 erwähnt zwei Stellen aus Beckmanns Tagebuch von 1945, in denen Beckmann auf das Bild, das er in einer Amsterdamer Ausstellung sah, mit „Zigeunerin✶✶“ referiert. Göpel erwähnt auch die Zeichnung Ilonka, ohne daraus einen Rückschluss auf den Titel zu ziehen. Im Zuge einer Prüfung von Bildtiteln auf rassistische Bezeichnungen, haben wir entschieden, den ersten Titel Ilonka wiederherzustellen und auf den späteren Titel Zigeunerin✶✶ II zu verzichten. Barbara Tiedemann und Siegfried Gohr, die das aktuelle Werkverzeichnis zu Beckmann bearbeiten, werden das Werk ebenfalls unter dem Titel Ilonka führen.
                     <br>Dr. Julia Friedrich
                 </td>
             </tr>
-            <tr>
-                <td class="left-align"><strong>Angaben zur rassistische Fremdbezeichnung (Museum Ludwig, Köln)</strong></td>
-                <td class="left-align">Diese rassistische Fremdbezeichnung vermittelt seit Jahrhunderten negative und exotisierende Stereotype. Sie ist untrennbar verbunden mit der Ausgrenzung, Vertreibung, Verfolgung und Ermordung von Sinti*zze und Rom*nja und schreibt ein diskriminierendes Menschenbild fort. Dennoch belassen wir sie im Werktitel. Als Museum können wir Werke nicht ändern – eine rassistische Darstellung so wenig wie einen rassistischen Titel. Wir können auf die soziale Gewalt und Unterdrückung, die Kunstwerke spiegeln oder selbst betreiben, hinweisen und sie in der Präsentation sichtbar machen.
+            <tr class="row-height">
+                <td class="col1" class="left-align"><strong>Angaben zur rassistische Fremdbezeichnung (Museum Ludwig, Köln)</strong></td>
+                <td class="col2" class="left-align">Diese rassistische Fremdbezeichnung vermittelt seit Jahrhunderten negative und exotisierende Stereotype. Sie ist untrennbar verbunden mit der Ausgrenzung, Vertreibung, Verfolgung und Ermordung von Sinti*zze und Rom*nja und schreibt ein diskriminierendes Menschenbild fort. Dennoch belassen wir sie im Werktitel. Als Museum können wir Werke nicht ändern – eine rassistische Darstellung so wenig wie einen rassistischen Titel. Wir können auf die soziale Gewalt und Unterdrückung, die Kunstwerke spiegeln oder selbst betreiben, hinweisen und sie in der Präsentation sichtbar machen.
                 </td>
             </tr>
         </tbody>
@@ -431,7 +434,7 @@
     <!-- New lines after the table -->
     <br><br><br>
 
-<footer class="site">
+    <footer class="site">
 
         <div class="footer-title">Antiziganismus und Ambivalenz in Europa</div>
 
