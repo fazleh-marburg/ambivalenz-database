@@ -1,4 +1,6 @@
-from flask import Flask, render_template, jsonify,request,render_template_string,Markup
+from flask import Flask, render_template, jsonify,request
+from markupsafe import Markup
+
 
 from neo4j import GraphDatabase
 import os
