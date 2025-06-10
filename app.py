@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify,request
+from flask import Flask, render_template, jsonify,request,render_template_string,Markup
+
 from neo4j import GraphDatabase
 import os
 
@@ -120,7 +121,43 @@ def Individual_page():
 
 @app.route('/visual_art/Individual_page_2')
 def Individual_page_2():
-    return render_template('Individual_page_2.html')
+    section = request.args.get('section', default=None)
+
+    if section == "Objekt_Informationen":
+        return render_template('Individual_page_2.html')
+    elif section == "Inhaltliche_Beschreibung":
+        try:
+            with open('templates/Inhaltliche_Beschreibung.html', 'r', encoding='utf-8') as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Annotation":
+        try:
+            with open('templates/Semantische_Annotation.html', 'r', encoding='utf-8') as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Relationen":
+        try:
+            with open('templates/Semantische_Relationen.html', 'r', encoding='utf-8') as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Technische_rechtliche":
+        try:
+            with open('templates/Technische_rechtliche.html', 'r', encoding='utf-8') as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    else:
+        return render_template('Individual_page_2.html')
+
+    # Render the template from templates/test.html
+    return render_template('Individual_page_var.html', section=section, content=content)
 
 
 @app.route('/supporters/')
