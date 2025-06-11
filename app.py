@@ -161,9 +161,33 @@ def Individual_page_2():
     # Render the template from templates/test.html
     return render_template('Individual_page_var.html', section=section, content=content)
 
+
 @app.route('/visual_art/Individual_page_var')
 def Individual_page_var():
     return render_template('Individual_page_var.html')
+
+
+@app.route('/visual_art/Zigeuner')
+def Zigeuner():
+    title = "Pipázó cigány (Pfeife rauchender „Zigeuner“)"
+    artist_info = ("Im Gegensatz zu vielen Darstellungen dieser Zeit: keine offensichtlichen antiziganistischen Stereotype. "
+                   "Der dargestellte Mann wird nicht exotisiert oder kriminalisiert, sondern erscheint würdevoll, selbstbewusst und bürgerlich. "
+                   "Titel „Pipázó cigány“ (übersetzt: „Pfeife rauchender Zigeuner“) verwendet die historisch belastete Bezeichnung „Zigeuner“. "
+                   "Schon durch die Benennung wird eine Fremdzuschreibung vorgenommen: Statt den individuellen Namen des Modells zu nennen, wird seine ethnische Zugehörigkeit betont und stereotyp markiert. "
+                   "Die Wortwahl verstärkt eine folkloristische Rahmung („Zigeuner“ + Pfeife als romantisierende, exotisierende Attribute). Auch wenn das Bild selbst individuelle Würde zeigt, reproduziert der Titel eine kulturelle Distanz und eine Fremddefinition.")
+    image_path = "private/Zigeuner.png"
+    return render_template("Individual_page_var.html",title=title,artist_info=artist_info,image_path=image_path)
+
+@app.route('/visual_art/Katze')
+def Katze():
+    title = "Zwei Zigeunerin** mit Katze*"
+    artist_info = ("•Rassistischer Werktitel (Begriff „Zigeunerinnen“). "
+                   "Darstellung als exotisch, erotisch, unzivilisiert. "
+                   "Fetischisierung weiblicher Romnja-Körper. "
+                   "Reproduktion kolonialer Zuschreibungen („das Andere“)")
+    image_path = "private/Katze.png"
+    return render_template("Individual_page_var.html",title=title,artist_info=artist_info,image_path=image_path)
+
 
 @app.route('/supporters/')
 def supporters():
