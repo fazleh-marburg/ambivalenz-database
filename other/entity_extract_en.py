@@ -5,7 +5,7 @@ import csv
 
 def find_dbpedia_entities(text, confidence=0.5):
     """
-    Find DBpedia entities in the given text using DBpedia Spotlight API (German).
+    Find DBpedia entities in the given text using DBpedia Spotlight API.
 
     Args:
         text (str): Input text to analyze.
@@ -14,7 +14,7 @@ def find_dbpedia_entities(text, confidence=0.5):
     Returns:
         list of dict: Entities with 'surface_form', 'dbpedia_uri', and 'wikipedia_link'.
     """
-    url = 'https://api.dbpedia-spotlight.org/de/annotate'
+    url = 'https://api.dbpedia-spotlight.org/en/annotate'
     headers = {'Accept': 'application/json'}
     params = {'text': text, 'confidence': confidence}
 
@@ -28,10 +28,7 @@ def find_dbpedia_entities(text, confidence=0.5):
         for res in resources:
             surface_form = res['@surfaceForm']
             dbpedia_uri = res['@URI']
-            wikipedia_link = dbpedia_uri.replace(
-                'http://dbpedia.org/resource/',
-                'https://de.wikipedia.org/wiki/'
-            )
+            wikipedia_link = dbpedia_uri.replace('http://dbpedia.org/resource/', 'https://en.wikipedia.org/wiki/')
             entities.append({
                 'surface_form': surface_form,
                 'dbpedia_uri': dbpedia_uri,
@@ -47,8 +44,8 @@ def find_dbpedia_entities(text, confidence=0.5):
 
 
 def main():
-    input_file = 'data/input_1.csv'  # Input CSV file
-    output_file = 'data/output_1.json'  # Output JSON file
+    input_file = '../data/input_2.csv'  # Input CSV file
+    output_file = '../data/output_2.json'  # Output JSON file
 
     results = []
     try:
