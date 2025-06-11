@@ -81,16 +81,16 @@
                     </div>
                     <ul class="menu">
                         <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Visual Art</a></li>
+                        <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
                         <li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li>
                         <li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li>
-                        <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
                         <li class="box clickable-box"><a class="box-link" href="http://137.248.186.54/browser/">Graph Database</a></li> <!-- External URL is fine -->
                     </ul>
                 </li>
                 <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Visual Art</a></li>
+                <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
                 <li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li>
                 <li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li>
-                <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
                 <li class="box clickable-box"><a class="box-link" href="http://137.248.186.54/browser/">Graph Database</a></li> <!-- External URL is fine -->
 
 
@@ -212,41 +212,41 @@
 
             <div>
                 <form class="filters" action="" method="get">
-                    <select name="section">
+                    <select name="type_of_painting">
                         <option value="" selected="selected">Painting</option>
                         <option value="dance">Ilonka</option>
                         <option value="film">Zwei Zigeuner</option>
                     </select>
 
-                    <select name="collection">
+                    <select name="collection_of_author">
                         <option value="" selected="selected">Author</option>
-                        <option value="collection-gustav-balazs">Collection KUNFFY LAJOS</option>
-                        <option value="collection-petra-gelbart">Collection BECKMANN MAX</option>
+                        <option value="collection-gustav-balazs">Collections of KUNFFY LAJOS</option>
+                        <option value="collection-petra-gelbart">Collections of BECKMANN MAX</option>
                     </select>
 
-                    <select name="term">
+                    <select name="collection_of_meuseum">
                         <option value="" selected="selected">Museum</option>
-                        <option value="19th-century">Ludwig, Köln</option>
-                        <option value="choreography">Lajos Kunffy- Memorial-Museum</option>
+                        <option value="19th-century">Collection of Ludwig, Köln</option>
+                        <option value="choreography">Collection of Lajos Kunffy- Memorial-Museum</option>
                     </select>
 
-                     <select name="term">
+                     <!--select name="term">
                         <option value="" selected="selected">Event</option>
                         <option value="19th-century">World War I</option>
                         <option value="choreography">World War II</option>
-                    </select>
+                    </select-->
 
-                    <select name="term">
+                    <!--select name="term">
                         <option value="" selected="selected">Country</option>
                         <option value="19th-century">Germany</option>
                         <option value="choreography">Hungary</option>
-                    </select>
+                    </select-->
 
-                    <select name="term">
+                    <!--select name="term">
                         <option value="" selected="selected">City</option>
                         <option value="19th-century">Berlin</option>
                         <option value="choreography">Rome</option>
-                    </select>
+                    </select-->
 
 
                     <button class="reset">Reset</button>
@@ -275,7 +275,7 @@
                                 </p>
 
                                 <p class="additional-info">
-                                    <span class="caption-short">Kunffy, Lajos, 1910</span>
+                                    <span class="caption-short">Lajos Kunffy (1910)</span>
                                 </p>
                             </figcaption>
                         </figure>
@@ -308,7 +308,7 @@
 
                     </div>
 
-                                        <div class="box thumbnail-box theatre itembundle clickable-box">
+                    <div class="box thumbnail-box theatre itembundle clickable-box">
                         <figure class="itembundle">
                             <div class="thumbnail theatre ">
                                 <img class="portrait"
@@ -345,7 +345,7 @@
 
                             <figcaption class="theatre">
                                 <p class="name">
-                                    <a class="box-link" href="{{ url_for('Individual_page_var') }}">
+                                    <a class="box-link" href="{{ url_for('Individual_page') }}">
                                         <p>Title: Pipázó cigány (Pfeife rauchender „Zigeuner“)<br></p>
                                     </a>
                                 </p>
@@ -357,8 +357,6 @@
                         </figure>
 
                     </div>
-
-
 
                 </div>
             </section>

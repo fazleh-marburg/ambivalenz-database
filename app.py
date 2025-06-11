@@ -161,6 +161,9 @@ def Individual_page_2():
     # Render the template from templates/test.html
     return render_template('Individual_page_var.html', section=section, content=content)
 
+@app.route('/visual_art/Individual_page_var')
+def Individual_page_var():
+    return render_template('Individual_page_var.html')
 
 @app.route('/supporters/')
 def supporters():
