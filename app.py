@@ -125,6 +125,15 @@ def Individual_page():
 def Individual_page_2():
     section = request.args.get('section', default=None)
 
+    #title = "Title: Zwei Zigeuner"
+    title = ""
+    artist_info ="""
+                   Das Bild ist ambivalent: Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ 
+                   der dargestellten Menschen, andererseits reproduziert es stereotype und exotisierende Merkmale. 
+                   Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
+                """
+    image_path = "private/Zwei_Zigeuner.png"
+
     if section == "Objekt_Informationen":
         return render_template('Individual_page_2.html')
     elif section == "Inhaltliche_Beschreibung":
@@ -159,7 +168,7 @@ def Individual_page_2():
         return render_template('Individual_page_2.html')
 
     # Render the template from templates/test.html
-    return render_template('Individual_page_var.html', section=section, content=content)
+    return render_template('Individual_page_var.html', title=title,artist_info=artist_info,image_path=image_path,section=section, content=content)
 
 
 @app.route('/visual_art/Individual_page_var')
