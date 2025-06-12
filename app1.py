@@ -146,8 +146,8 @@ def Individual_page():
     return render_template("Individual_page.html")
 
 
-@app.route("/visual_art/Individual_page_var")
-def Individual_page_var():
+@app.route("/visual_art/Individual_page_2")
+def Individual_page_2():
     section = request.args.get("section", default=None)
 
     # title = "Title: Zwei Zigeuner"
@@ -160,7 +160,7 @@ def Individual_page_var():
     image_path = "private/Zwei_Zigeuner.png"
 
     if section == "Objekt_Informationen":
-        return render_template("Individual_page_var.html")
+        return render_template("Individual_page_2.html")
     elif section == "Inhaltliche_Beschreibung":
         try:
             with open(
@@ -198,7 +198,7 @@ def Individual_page_var():
         except FileNotFoundError:
             content = "Table file not found."
     else:
-        return render_template("Individual_page_var.html")
+        return render_template("Individual_page_2.html")
 
     # Render the template from templates/test.html
     return render_template(
@@ -211,9 +211,9 @@ def Individual_page_var():
     )
 
 
-#@app.route("/visual_art/Individual_page_var")
-#def Individual_page_var():
-#    return render_template("Individual_page_var.html")
+@app.route("/visual_art/Individual_page_var")
+def Individual_page_var():
+    return render_template("Individual_page_var.html")
 
 
 @app.route("/visual_art/Zwei_Zigeuner")
@@ -229,21 +229,59 @@ def Zwei_Zigeuner():
 
     section = request.args.get("section", default=None)
 
-    try:
-        with open(
-                "templates/Objektinformationen.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
+    if section == "Objekt_Informationen":
+        try:
+            with open(
+                    "templates/Objektinformationen.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Inhaltliche_Beschreibung":
+        try:
+            with open(
+                "templates/Inhaltliche_Beschreibung.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Annotation":
+        try:
+            with open(
+                "templates/Semantische_Annotation.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Relationen":
+        try:
+            with open(
+                "templates/Semantische_Relationen.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Technische_rechtliche":
+        try:
+            with open(
+                "templates/Technische_rechtliche.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+
 
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
-        content=content
+        section=section,
     )
 
 
