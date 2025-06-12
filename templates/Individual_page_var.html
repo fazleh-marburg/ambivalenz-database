@@ -153,7 +153,7 @@
                          {{ url_for('static', filename='images/Uni_Marburg_Siegel.png') }} 93w,
                          {{ url_for('static', filename='images/Uni_Marburg_Siegel.png') }} 103w" src="{{ url_for('static', filename='images/Uni_Marburg_Siegel.png') }}" alt="Uni Marburg Logo">
       </a>
-      <h1 id="header-title">Zwei Zigeuner</h1>
+      <h1 id="header-title">{{ title }}</h1>
       <div id="header-tools">
         <a id="search" href=href="http://137.248.186.54:5000/search/">
           <img src="{{ url_for('static', filename='images/search.svg') }}" alt="Search">
@@ -354,7 +354,6 @@
              width="400" height="400">
 
         <div class="text">
-            <h2>{{ title }}</h2>
             <p>{{ artist_info }}</p>
         </div>
     </div>

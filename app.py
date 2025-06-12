@@ -1,9 +1,8 @@
 from flask import Flask, render_template, jsonify,request
 from markupsafe import Markup
-
-
 from neo4j import GraphDatabase
 import os
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -174,6 +173,28 @@ def Individual_page_2():
 @app.route('/visual_art/Individual_page_var')
 def Individual_page_var():
     return render_template('Individual_page_var.html')
+
+@app.route('/visual_art/Zwei_Zigeuner')
+def Zwei_Zigeuner():
+    title = "Zwei Zigeuner"
+    artist_info ="""
+    Das Bild <a href = "https://en.wikipedia.org/wiki/Bild" target = "_blank" rel = "noopener noreferrer" > Bild </a> ist ambivalent: 
+    Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
+    < a href = "https://en.wikipedia.org/wiki/Stereotype" target = "_blank" rel = "noopener noreferrer" > stereotype </a> und
+    exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
+    """
+    image_path = "private/Zwei_Zigeuner.png"
+    return render_template("Individual_page_var.html",title=title,artist_info=artist_info,image_path=image_path)
+
+@app.route('/visual_art/Ilonka')
+def Ilonka():
+    title = "Ilonka"
+    artist_info ="""
+    Fremdbild vs. Selbstpräsenz: Ilonka wird mit Attributen der „Zigeunerin“ ausgestattet: dunkle Kleidung, Goldschmuck, 
+    sinnlicher Blick Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
+    """
+    image_path = "private/Ilonka.png"
+    return render_template("Individual_page_var.html",title=title,artist_info=artist_info,image_path=image_path)
 
 
 @app.route('/visual_art/Zigeuner')
