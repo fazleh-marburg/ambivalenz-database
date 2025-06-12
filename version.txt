@@ -1,0 +1,1 @@
+stable version 20250612: indivudial page works
