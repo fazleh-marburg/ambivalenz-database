@@ -199,7 +199,6 @@
                 <a class="box-link" href="http://137.248.186.54:7474/browser/">Graph Database</a>
               </li>
               <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
-              <!-- External URL is fine -->
             </ul>
           </li>
           <li class="box clickable-box">
@@ -217,7 +216,7 @@
           <li class="box clickable-box">
             <a class="box-link" href="http://137.248.186.54:7474/browser/">Graph Database</a>
           </li>
-          <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
+            <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
           <!-- External URL is fine -->
           <li class="secondary submenu collapsed">
             <div class="box submenu-header clickable-box">
@@ -332,13 +331,13 @@
     </div>
     <div>
       <form class="filters" action="" method="get">
-        <select name="section">
-          <option value="" selected="selected">Informationen</option>
-          <option value="Objekt_Informationen">1. Objektinformationen</option>
-          <option value="Inhaltliche_Beschreibung"> 2. Inhaltliche Beschreibung</option>
-          <option value="Semantische_Annotation"> 3. Semantische Annotation</option>
-          <option value="Semantische_Relationen"> 4. Semantische Relationen</option>
-        </select>
+        <!--select name="section">
+          <option value="" selected="selected">Information</option>
+          <option value="Painting">1. Painting</option>
+          <option value="Book"> 2. Book</option>
+          <option value="Flim"> 3. Flim</option>
+          <option value="Audio"> 4. Audio</option>
+        </select-->
       </form>
     </div>
     <!--div class="container">
@@ -349,20 +348,99 @@
       </div>
     </div-->
 
-    <div class="container">
-        <img class="portrait"
-             src="{{ url_for('static', filename=image_path) }}"
-             alt="{{ title }}"
-             width="400" height="400">
+<h2> Description_1 </h2>
+<table class="property-table">
+    <thead>
+        <tr class="row-height">
+            <th><p style="color: #333333;"><strong>Property</strong></p></th>
+            <th><strong>Value</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prop, val in properties_1 %}
+        <tr class="row-height">
+            <td class="col1 left-align"><strong>{{ prop }}</strong></td>
+            <td class="col2 left-align">{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-        <div class="text">
-            <p>{{ artist_info }}</p>
-        </div>
-    </div>
 
-    <div>
-      <p>{{ content }}</p>
-    </div>
+    <h2> Description_2</h2>
+
+    <table class="property-table">
+    <thead>
+        <tr class="row-height">
+            <th><p style="color: #333333;"><strong>Property</strong></p></th>
+            <th><strong>Value</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prop, val in properties_2 %}
+        <tr class="row-height">
+            <td class="col1 left-align"><strong>{{ prop }}</strong></td>
+            <td class="col2 left-align">{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h2> Description_3 </h2>
+<table class="property-table">
+    <thead>
+        <tr class="row-height">
+            <th><p style="color: #333333;"><strong>Property</strong></p></th>
+            <th><strong>Value</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prop, val in properties_3 %}
+        <tr class="row-height">
+            <td class="col1 left-align"><strong>{{ prop }}</strong></td>
+            <td class="col2 left-align">{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    <h2> Description_4 </h2>
+    <table class="property-table">
+    <thead>
+        <tr class="row-height">
+            <th><p style="color: #333333;"><strong>Property</strong></p></th>
+            <th><strong>Value</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prop, val in properties_4 %}
+        <tr class="row-height">
+            <td class="col1 left-align"><strong>{{ prop }}</strong></td>
+            <td class="col2 left-align">{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+    <h2> Description_5 </h2>
+    <table class="property-table">
+    <thead>
+        <tr class="row-height">
+            <th><p style="color: #333333;"><strong>Property</strong></p></th>
+            <th><strong>Value</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for prop, val in properties_5 %}
+        <tr class="row-height">
+            <td class="col1 left-align"><strong>{{ prop }}</strong></td>
+            <td class="col2 left-align">{{ val }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
     <br>
     <footer class="site">

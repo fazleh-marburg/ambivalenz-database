@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from markupsafe import Markup
 from neo4j import GraphDatabase
 import os
+import csv
 from bs4 import BeautifulSoup
 
 
@@ -360,6 +361,44 @@ def Katze():
         image_path=image_path,
         content=content
     )
+
+@app.route("/index/Metadata/")
+def Metadata():
+    title = "Metadata Description"
+    properties_1 = []
+    with open('data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            properties_1.append((row["Property"], row["text"]))
+
+    properties_2= []
+    with open('data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            properties_2.append((row["Property"], row["text"]))
+
+    properties_3 = []
+    with open('data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            properties_3.append((row["Property"], row["text"]))
+
+    properties_4 = []
+    with open('data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            properties_4.append((row["Property"], row["text"]))
+
+    properties_5 = []
+    with open('data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            properties_5.append((row["Property"], row["text"]))
+
+    return render_template("Metadata_page_var.html", title=title,
+                           properties_1=properties_1, properties_2=properties_2,
+                           properties_3=properties_3, properties_4=properties_4,
+                           properties_5=properties_5)
 
 
 @app.route("/supporters/")
