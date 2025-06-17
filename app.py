@@ -57,20 +57,6 @@ def visual_art():
         query=submitted_query,
     )
 
-    #    return render_template("visual_art.html")
-
-
-# @app.route("/visual_art", methods=["GET", "POST"])  MATCH (n) RETURN n LIMIT 5
-# def query():
-#    keys, records, error, submitted_query = [], [], None, ""
-
-#    if request.method == "POST":
-#        submitted_query = request.form.get("cypher_query")
-#        keys, records, error = run_cypher_query(submitted_query)
-
-#    return render_template("visual_art.html", keys=keys, records=records, error=error, query=submitted_query)
-
-
 @app.route("/audio")
 def audio():
     return render_template("audio.html")
@@ -83,8 +69,19 @@ def video():
 
 @app.route("/book")
 def book():
-    return render_template("book.html")
+    keys, records, error, submitted_query = [], [], None, ""
 
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "book.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
 
 @app.route("/about/")
 def about():
@@ -164,7 +161,7 @@ def Individual_page_var():
     elif section == "Inhaltliche_Beschreibung":
         try:
             with open(
-                "templates/Inhaltliche_Beschreibung.html", "r", encoding="utf-8"
+                    "templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -173,7 +170,7 @@ def Individual_page_var():
     elif section == "Semantische_Annotation":
         try:
             with open(
-                "templates/Semantische_Annotation.html", "r", encoding="utf-8"
+                    "templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -182,7 +179,7 @@ def Individual_page_var():
     elif section == "Semantische_Relationen":
         try:
             with open(
-                "templates/Semantische_Relationen.html", "r", encoding="utf-8"
+                    "templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -191,7 +188,7 @@ def Individual_page_var():
     elif section == "Technische_rechtliche":
         try:
             with open(
-                "templates/Technische_rechtliche.html", "r", encoding="utf-8"
+                    "templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -215,23 +212,56 @@ def Individual_page_var():
 #def Individual_page_var():
 #    return render_template("Individual_page_var.html")
 
+def fetch_object_by_name(name):
+    with driver.session() as session:
+        result = session.run("MATCH (o:Objekt {name: $name}) RETURN o", name=name)
+        record = result.single()
+        if record:
+            return dict(record["o"])
+        return None
+
+@app.route("/book/Roma_Sinti")
+def Roma_Sinti():
+    title = "Roma & Sinti : Zigeuner-Darstellungen der Moderne"
+    artist_info = """
+    Entstehung: frühes 20. Jahrhundert, kurz vor dem Ersten Weltkrieg Ungarn als Teil der Donaumonarchie 
+    mit starken ethnischen Spannungen Zunehmende politische Kontrolle und Militarisierung (z. B. Haarschnitt 
+    der Rekruten ab 1914 als Disziplinierungsmaßnahme) Stigmatisierung und Marginalisierung von Roma-Gruppen 
+    im gesamten europäischen Raum Beginn einer staatlich regulierten Rassifizierung  Ermittlung der Daten…
+    """
+    image_path = "private/Roma_Sinti.png"
+
+    try:
+        with open(
+                "templates/book_roma_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+
 
 @app.route("/visual_art/Zwei_Zigeuner")
 def Zwei_Zigeuner():
     title = "Zwei Zigeuner"
     artist_info = """
-    Das Bild <a href = "https://en.wikipedia.org/wiki/Bild" target = "_blank" rel = "noopener noreferrer" > Bild </a> ist ambivalent: 
-    Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
-    < a href = "https://en.wikipedia.org/wiki/Stereotype" target = "_blank" rel = "noopener noreferrer" > stereotype </a> und
-    exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
+    Das Bild Bild ist ambivalent: Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
+    stereotype und exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
     """
     image_path = "private/Zwei_Zigeuner.png"
 
-    section = request.args.get("section", default=None)
-
     try:
         with open(
-                "templates/Objektinformationen.html", "r", encoding="utf-8"
+                "templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -255,11 +285,22 @@ def Ilonka():
     sinnlicher Blick Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
     """
     image_path = "private/Ilonka.png"
+
+    try:
+        with open(
+                "templates/painting_ilonka_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
+        content=content
     )
 
 
@@ -274,11 +315,21 @@ def Zigeuner():
         "Die Wortwahl verstärkt eine folkloristische Rahmung („Zigeuner“ + Pfeife als romantisierende, exotisierende Attribute). Auch wenn das Bild selbst individuelle Würde zeigt, reproduziert der Titel eine kulturelle Distanz und eine Fremddefinition."
     )
     image_path = "private/Zigeuner.png"
+    try:
+        with open(
+                "templates/painting_zigeuner_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
+        content=content
     )
 
 
@@ -292,11 +343,22 @@ def Katze():
         "Reproduktion kolonialer Zuschreibungen („das Andere“)"
     )
     image_path = "private/Katze.png"
+
+    try:
+        with open(
+                "templates/painting_katze_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
+        content=content
     )
 
 
