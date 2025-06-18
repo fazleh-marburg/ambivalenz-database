@@ -1,24 +1,27 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10-slim
+version: '3.8'
 
-# Set the working directory inside the container
-WORKDIR /app
+services:
+  neo4j:
+    image: neo4j:5.19
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - neo4j_data:/data
 
-# Copy requirements.txt first to leverage Docker caching
-COPY requirements.txt .
+  flaskapp:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - neo4j
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
 
-# Install any needed dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application code
-COPY . .
-
-# Make port 5000 available to the outside
-EXPOSE 5000
-
-# Define environment variable for Flask
-ENV FLASK_APP=app.py
-
-# Run the application
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+volumes:
+  neo4j_data:
 
