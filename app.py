@@ -8,6 +8,9 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from neo4j import GraphDatabase
 from werkzeug.security import generate_password_hash
+import re
+from flask import Flask, request, render_template, redirect, url_for, flash
+
 
 from app_login import login_manager
 
@@ -75,11 +78,6 @@ def get_nodes():
     with driver.session() as session:
         result = session.run("MATCH (n:Person) RETURN n.name AS name LIMIT 10")
         return [record["name"] for record in result]
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 
 @app.route("/api/nodes")
@@ -483,6 +481,18 @@ def run_cypher_query(cypher_query):
         except Exception as e:
             return [], [], str(e)
 
+def is_valid_password(password):
+    """
+    Validate that password contains:
+    - at least one uppercase letter A-Z
+    - at least one lowercase letter a-z
+    - at least one special character !@#$%^&*()_-.,?":{}|<>
+    """
+    return (
+        re.search(r'[A-Z]', password) and      # Uppercase
+        re.search(r'[a-z]', password) and      # Lowercase
+        re.search(r'[!@#$%^&*()_\-.,?":{}|<>]', password)
+    )
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -490,6 +500,11 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        if not is_valid_password(password):
+            flash('Password must include at least one uppercase letter, one lowercase letter, and one symbol !@#$%^&*()_\-.,?":{}|<>')
+            return redirect(url_for('register'))
+
+
         name = request.form['name']
         institution = request.form['institution']
         user_group = request.form['user_group']
@@ -551,6 +566,7 @@ def load_user(user_id):
     return None
 
 # --- Routes
+@app.route('/', methods=['GET', 'POST'])  # Root route shows login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -568,16 +584,20 @@ def login():
                 if check_password_hash(u["password_hash"], password):
                     user = User(u["id"], u["username"], u["password_hash"])
                     login_user(user)
-                    return redirect(url_for('dashboard'))
+                    return redirect(url_for('index'))
 
         flash("Invalid username or password")
     return render_template('login.html')
 
 
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('index.html', username=current_user.username)
+# @app.route('/dashboard')
+# @login_required
+# def dashboard():
+#     return render_template('index.html', username=current_user.username)
+
+@app.route("/index")
+def index():
+    return render_template("index.html")
 
 
 @app.route('/delete_all_data')
@@ -612,4 +632,4 @@ def get_universities_from_csv():
 
 if __name__ == "__main__":
     ensure_default_user()
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
