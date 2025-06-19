@@ -31,21 +31,28 @@ login_manager.login_view = 'login'  # or your login route name
 from flask_login import UserMixin
 
 class User(UserMixin):
-    def __init__(self, id, username, password_hash):
-        self.id = id
+    def __init__(self, id_, username, password_hash, name=None, institution=None, user_group=None):
+        self.id = id_
         self.username = username
         self.password_hash = password_hash
+        self.name = name
+        self.institution = institution
+        self.user_group = user_group
 
 # 🔁 user loader for login sessions
 @login_manager.user_loader
 def load_user(user_id):
-    # e.g. lookup user in Neo4j
     with driver.session() as session:
-        result = session.run("MATCH (u:User {id: $id}) RETURN u", {"id": user_id})
+        result = session.run(
+            "MATCH (u:User) WHERE u.id = $id RETURN u", {"id": int(user_id)}
+        )
         record = result.single()
         if record:
             u = record["u"]
-            return User(u["id"], u["username"], u["password_hash"])
+            return User(
+                u["id"], u["username"], u["password_hash"],
+                u.get("name"), u.get("institution"), u.get("user_group")
+            )
     return None
 
 
@@ -479,13 +486,16 @@ def run_cypher_query(cypher_query):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    universities = get_universities_from_csv()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        name = request.form['name']
+        institution = request.form['institution']
+        user_group = request.form['user_group']
         password_hash = generate_password_hash(password)
 
         with driver.session() as session:
-            # Check if user already exists
             result = session.run(
                 "MATCH (u:User {username: $username}) RETURN u",
                 {"username": username}
@@ -494,22 +504,30 @@ def register():
                 flash("Username already taken")
                 return redirect(url_for('register'))
 
-            # Create the user
             session.run(
                 """
                 CREATE (u:User {
                     id: toInteger(timestamp()),
                     username: $username,
-                    password_hash: $password_hash
+                    password_hash: $password_hash,
+                    name: $name,
+                    institution: $institution,
+                    user_group: $user_group
                 })
                 """,
-                {"username": username, "password_hash": password_hash}
+                {
+                    "username": username,
+                    "password_hash": password_hash,
+                    "name": name,
+                    "institution": institution,
+                    "user_group": user_group
+                }
             )
 
             flash("Registration successful! You can now log in.")
             return redirect(url_for('login'))
 
-    return render_template('register.html')
+    return render_template('register.html', universities=universities)
 
 
 # --- User model
@@ -562,6 +580,14 @@ def dashboard():
     return render_template('index.html', username=current_user.username)
 
 
+@app.route('/delete_all_data')
+def delete_all_data():
+    with driver.session() as session:
+        session.run("MATCH (n) DETACH DELETE n")
+    return "All data deleted from Neo4j."
+
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -579,7 +605,10 @@ def ensure_default_user():
                 {"id": 1, "username": "admin", "password_hash": hashed}
             )
 
-
+def get_universities_from_csv():
+    filepath='data/newdata/universities.csv'
+    with open(filepath, newline='', encoding='utf-8') as csvfile:
+        return [row[0] for row in csv.reader(csvfile)]
 
 if __name__ == "__main__":
     ensure_default_user()
