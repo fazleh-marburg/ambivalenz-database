@@ -606,7 +606,7 @@ def ensure_default_user():
             )
 
 def get_universities_from_csv():
-    filepath='data/newdata/universities.csv'
+    filepath='open-data/universities.csv'
     with open(filepath, newline='', encoding='utf-8') as csvfile:
         return [row[0] for row in csv.reader(csvfile)]
 
