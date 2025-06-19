@@ -494,16 +494,27 @@ def is_valid_password(password):
         re.search(r'[!@#$%^&*()_\-.,?":{}|<>]', password)
     )
 
+
+def is_valid_email(email):
+    # Basic regex for email validation
+    email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(email_regex, email)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     universities = get_universities_from_csv()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not is_valid_password(password):
-            flash('Password must include at least one uppercase letter, one lowercase letter, and one symbol !@#$%^&*()_\-.,?":{}|<>')
+        email = request.form['email']
+
+        if not is_valid_email(email):
+            flash('Please enter a valid email address.')
             return redirect(url_for('register'))
 
+        if not is_valid_password(password):
+            flash('Password must include at least one uppercase letter, one lowercase letter, and one symbol !@#$%^&*()_-.,?":{}|<>')
+            return redirect(url_for('register'))
 
         name = request.form['name']
         institution = request.form['institution']
@@ -511,12 +522,21 @@ def register():
         password_hash = generate_password_hash(password)
 
         with driver.session() as session:
-            result = session.run(
+            existing_user = session.run(
                 "MATCH (u:User {username: $username}) RETURN u",
                 {"username": username}
-            )
-            if result.single():
-                flash("Username already taken")
+            ).single()
+
+            existing_email = session.run(
+                "MATCH (u:User {email: $email}) RETURN u",
+                {"email": email}
+            ).single()
+
+            if existing_user:
+                flash("Username already taken.")
+                return redirect(url_for('register'))
+            if existing_email:
+                flash("Email already registered.")
                 return redirect(url_for('register'))
 
             session.run(
@@ -524,6 +544,7 @@ def register():
                 CREATE (u:User {
                     id: toInteger(timestamp()),
                     username: $username,
+                    email: $email,
                     password_hash: $password_hash,
                     name: $name,
                     institution: $institution,
@@ -532,6 +553,7 @@ def register():
                 """,
                 {
                     "username": username,
+                    "email": email,
                     "password_hash": password_hash,
                     "name": name,
                     "institution": institution,
