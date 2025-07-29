@@ -1,43 +1,73 @@
-from flask import jsonify
-from markupsafe import Markup
-import os
-import csv
-from flask_login import login_user, login_required, logout_user
-from werkzeug.security import check_password_hash
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 from neo4j import GraphDatabase
 from werkzeug.security import generate_password_hash
-import re
-from flask import request, render_template, redirect, url_for, flash
+from flask import Flask, render_template, jsonify, request
+from markupsafe import Markup
+from neo4j import GraphDatabase
+import os
+import csv
 
-#from flask import Flask
+# --- Flask setup
+app = Flask(__name__)
+app.secret_key = 'super-secret-key'
 
-#app = Flask(__name__, static_url_path="/static")
-# app.secret_key = os.getenv("FLASK_SECRET_KEY", "your-default-secret-key")
-
-from flask import Flask
-from flask_login import LoginManager
-
-app = Flask(__name__, static_url_path="/static")
-app.secret_key = "your-secret-key"
-
-# ✅ Initialize and attach login manager
+# --- Login manager
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # or your login route name
+login_manager.login_view = 'login'
+
+# --- Neo4j config
+NEO4J_URI = "bolt://localhost:7687"
+NEO4J_USER = "neo4j"
+NEO4J_PASS = "password"
+
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        password_hash = generate_password_hash(password)
+
+        with driver.session() as session:
+            # Check if user already exists
+            result = session.run(
+                "MATCH (u:User {username: $username}) RETURN u",
+                {"username": username}
+            )
+            if result.single():
+                flash("Username already taken")
+                return redirect(url_for('register'))
+
+            # Create the user
+            session.run(
+                """
+                CREATE (u:User {
+                    id: toInteger(timestamp()),
+                    username: $username,
+                    password_hash: $password_hash
+                })
+                """,
+                {"username": username, "password_hash": password_hash}
+            )
+
+            flash("Registration successful! You can now log in.")
+            return redirect(url_for('login'))
+
+    return render_template('register.html')
 
 
-from flask_login import UserMixin
-
+# --- User model
 class User(UserMixin):
-    def __init__(self, id_, username, password_hash, name=None, institution=None, user_group=None):
+    def __init__(self, id_, username, password_hash):
         self.id = id_
         self.username = username
         self.password_hash = password_hash
-        self.name = name
-        self.institution = institution
-        self.user_group = user_group
 
-# 🔁 user loader for login sessions
+# --- Load user from session
 @login_manager.user_loader
 def load_user(user_id):
     with driver.session() as session:
@@ -47,32 +77,65 @@ def load_user(user_id):
         record = result.single()
         if record:
             u = record["u"]
-            return User(
-                u["id"], u["username"], u["password_hash"],
-                u.get("name"), u.get("institution"), u.get("user_group")
-            )
+            return User(u["id"], u["username"], u["password_hash"])
     return None
 
+# --- Routes
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-# Configure your Neo4j connection
-# uri = "bolt://localhost:7687"
-# username = "neo4j"
-# password = "password"
-# driver = GraphDatabase.driver(uri, auth=(username, password))
+        with driver.session() as session:
+            result = session.run(
+                "MATCH (u:User {username: $username}) RETURN u",
+                {"username": username}
+            )
+            record = result.single()
+            if record:
+                u = record["u"]
+                if check_password_hash(u["password_hash"], password):
+                    user = User(u["id"], u["username"], u["password_hash"])
+                    login_user(user)
+                    return redirect(url_for('dashboard'))
 
-uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-username = os.getenv("NEpyO4J_USERNAME", "neo4j")
-password = os.getenv("NEO4J_PASSWORD", "password")
-driver = GraphDatabase.driver(
-    os.getenv("NEO4J_URI", "bolt://neo4j:7687"),
-    auth=(os.getenv("NEO4J_USER", "neo4j"), os.getenv("NEO4J_PASSWORD", "password"))
-)
+        flash("Invalid username or password")
+    return render_template('login.html')
 
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('index.html', username=current_user.username)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+# --- Optional: Create a default user if none exists
+def ensure_default_user():
+    with driver.session() as session:
+        result = session.run("MATCH (u:User {username: $username}) RETURN u", {"username": "admin"})
+        if not result.single():
+            hashed = generate_password_hash("secret")
+            session.run(
+                "CREATE (u:User {id: $id, username: $username, password_hash: $password_hash})",
+                {"id": 1, "username": "admin", "password_hash": hashed}
+            )
 
 def get_nodes():
     with driver.session() as session:
         result = session.run("MATCH (n:Person) RETURN n.name AS name LIMIT 10")
         return [record["name"] for record in result]
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 @app.route("/api/nodes")
@@ -199,14 +262,14 @@ def Individual_page_var():
                    der dargestellten Menschen, andererseits reproduziert es stereotype und exotisierende Merkmale. 
                    Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
                 """
-    image_path = "private/Zwei_Zigeuner.png"
+    image_path = "../private/Zwei_Zigeuner.png"
 
     if section == "Objekt_Informationen":
         return render_template("Individual_page_var.html")
     elif section == "Inhaltliche_Beschreibung":
         try:
             with open(
-                    "templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -215,7 +278,7 @@ def Individual_page_var():
     elif section == "Semantische_Annotation":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -224,7 +287,7 @@ def Individual_page_var():
     elif section == "Semantische_Relationen":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -233,7 +296,7 @@ def Individual_page_var():
     elif section == "Technische_rechtliche":
         try:
             with open(
-                    "templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -278,7 +341,7 @@ def Roma_Sinti():
 
     try:
         with open(
-                "templates/book_roma_all.html", "r", encoding="utf-8"
+                "../templates/book_roma_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -302,11 +365,11 @@ def Zwei_Zigeuner():
     Das Bild Bild ist ambivalent: Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
     stereotype und exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
     """
-    image_path = "private/Zwei_Zigeuner.png"
+    image_path = "../private/Zwei_Zigeuner.png"
 
     try:
         with open(
-                "templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
+                "../templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -329,11 +392,11 @@ def Ilonka():
     Fremdbild vs. Selbstpräsenz: Ilonka wird mit Attributen der „Zigeunerin“ ausgestattet: dunkle Kleidung, Goldschmuck, 
     sinnlicher Blick Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
     """
-    image_path = "private/Ilonka.png"
+    image_path = "../private/Ilonka.png"
 
     try:
         with open(
-                "templates/painting_ilonka_all.html", "r", encoding="utf-8"
+                "../templates/painting_ilonka_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -359,10 +422,10 @@ def Zigeuner():
         "Schon durch die Benennung wird eine Fremdzuschreibung vorgenommen: Statt den individuellen Namen des Modells zu nennen, wird seine ethnische Zugehörigkeit betont und stereotyp markiert. "
         "Die Wortwahl verstärkt eine folkloristische Rahmung („Zigeuner“ + Pfeife als romantisierende, exotisierende Attribute). Auch wenn das Bild selbst individuelle Würde zeigt, reproduziert der Titel eine kulturelle Distanz und eine Fremddefinition."
     )
-    image_path = "private/Zigeuner.png"
+    image_path = "../private/Zigeuner.png"
     try:
         with open(
-                "templates/painting_zigeuner_all.html", "r", encoding="utf-8"
+                "../templates/painting_zigeuner_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -387,11 +450,11 @@ def Katze():
         "Fetischisierung weiblicher Romnja-Körper. "
         "Reproduktion kolonialer Zuschreibungen („das Andere“)"
     )
-    image_path = "private/Katze.png"
+    image_path = "../private/Katze.png"
 
     try:
         with open(
-                "templates/painting_katze_all.html", "r", encoding="utf-8"
+                "../templates/painting_katze_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -410,31 +473,31 @@ def Katze():
 def Metadata():
     title = "Metadata Description"
     properties_1 = []
-    with open('data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_1.append((row["Property"], row["text"]))
 
     properties_2= []
-    with open('data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_2.append((row["Property"], row["text"]))
 
     properties_3 = []
-    with open('data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_3.append((row["Property"], row["text"]))
 
     properties_4 = []
-    with open('data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_4.append((row["Property"], row["text"]))
 
     properties_5 = []
-    with open('data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_5.append((row["Property"], row["text"]))
@@ -476,180 +539,7 @@ def run_cypher_query(cypher_query):
         except Exception as e:
             return [], [], str(e)
 
-def is_valid_password(password):
-    """
-    Validate that password contains:
-    - at least one uppercase letter A-Z
-    - at least one lowercase letter a-z
-    - at least one special character !@#$%^&*()_-.,?":{}|<>
-    """
-    return (
-        re.search(r'[A-Z]', password) and      # Uppercase
-        re.search(r'[a-z]', password) and      # Lowercase
-        re.search(r'[!@#$%^&*()_\-.,?":{}|<>]', password)
-    )
 
-
-def is_valid_email(email):
-    # Basic regex for email validation
-    email_regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    return re.match(email_regex, email)
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    universities = get_universities_from_csv()
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-
-        if not is_valid_email(email):
-            flash('Please enter a valid email address.')
-            return redirect(url_for('register'))
-
-        if not is_valid_password(password):
-            flash('Password must include at least one uppercase letter, one lowercase letter, and one symbol !@#$%^&*()_-.,?":{}|<>')
-            return redirect(url_for('register'))
-
-        name = request.form['name']
-        institution = request.form['institution']
-        user_group = request.form['user_group']
-        password_hash = generate_password_hash(password)
-
-        with driver.session() as session:
-            existing_user = session.run(
-                "MATCH (u:User {username: $username}) RETURN u",
-                {"username": username}
-            ).single()
-
-            existing_email = session.run(
-                "MATCH (u:User {email: $email}) RETURN u",
-                {"email": email}
-            ).single()
-
-            if existing_user:
-                flash("Username already taken.")
-                return redirect(url_for('register'))
-            if existing_email:
-                flash("Email already registered.")
-                return redirect(url_for('register'))
-
-            session.run(
-                """
-                CREATE (u:User {
-                    id: toInteger(timestamp()),
-                    username: $username,
-                    email: $email,
-                    password_hash: $password_hash,
-                    name: $name,
-                    institution: $institution,
-                    user_group: $user_group
-                })
-                """,
-                {
-                    "username": username,
-                    "email": email,
-                    "password_hash": password_hash,
-                    "name": name,
-                    "institution": institution,
-                    "user_group": user_group
-                }
-            )
-
-            flash("Registration successful! You can now log in.")
-            return redirect(url_for('login'))
-
-    return render_template('register.html', universities=universities)
-
-
-# --- User model
-class User(UserMixin):
-    def __init__(self, id_, username, password_hash):
-        self.id = id_
-        self.username = username
-        self.password_hash = password_hash
-
-# --- Load user from session
-@login_manager.user_loader
-def load_user(user_id):
-    with driver.session() as session:
-        result = session.run(
-            "MATCH (u:User) WHERE u.id = $id RETURN u", {"id": int(user_id)}
-        )
-        record = result.single()
-        if record:
-            u = record["u"]
-            return User(u["id"], u["username"], u["password_hash"])
-    return None
-
-# --- Routes
-@app.route('/', methods=['GET', 'POST'])  # Root route shows login
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        with driver.session() as session:
-            result = session.run(
-                "MATCH (u:User {username: $username}) RETURN u",
-                {"username": username}
-            )
-            record = result.single()
-            if record:
-                u = record["u"]
-                if check_password_hash(u["password_hash"], password):
-                    user = User(u["id"], u["username"], u["password_hash"])
-                    login_user(user)
-                    return redirect(url_for('index'))
-
-        flash("Invalid username or password")
-    return render_template('login.html')
-
-
-# @app.route('/dashboard')
-# @login_required
-# def dashboard():
-#     return render_template('index.html', username=current_user.username)
-
-@app.route("/index")
-def index():
-    return render_template("index.html")
-
-
-@app.route('/delete_all_data')
-def delete_all_data():
-    with driver.session() as session:
-        session.run("MATCH (n) DETACH DELETE n")
-    return "All data deleted from Neo4j."
-
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
-# --- Optional: Create a default user if none exists
-def ensure_default_user():
-    with driver.session() as session:
-        result = session.run("MATCH (u:User {username: $username}) RETURN u", {"username": "admin"})
-        if not result.single():
-            hashed = generate_password_hash("secret")
-            session.run(
-                "CREATE (u:User {id: $id, username: $username, password_hash: $password_hash})",
-                {"id": 1, "username": "admin", "password_hash": hashed}
-            )
-
-def get_universities_from_csv():
-    filepath='open-data/universities.csv'
-    with open(filepath, newline='', encoding='utf-8') as csvfile:
-        return [row[0] for row in csv.reader(csvfile)]
-
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     ensure_default_user()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", debug=True)

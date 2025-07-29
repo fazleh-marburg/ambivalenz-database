@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from markupsafe import Markup
 from neo4j import GraphDatabase
 import os
-import csv
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__, static_url_path="/static")
@@ -57,6 +57,20 @@ def visual_art():
         query=submitted_query,
     )
 
+    #    return render_template("visual_art.html")
+
+
+# @app.route("/visual_art", methods=["GET", "POST"])  MATCH (n) RETURN n LIMIT 5
+# def query():
+#    keys, records, error, submitted_query = [], [], None, ""
+
+#    if request.method == "POST":
+#        submitted_query = request.form.get("cypher_query")
+#        keys, records, error = run_cypher_query(submitted_query)
+
+#    return render_template("visual_art.html", keys=keys, records=records, error=error, query=submitted_query)
+
+
 @app.route("/audio")
 def audio():
     return render_template("audio.html")
@@ -69,19 +83,8 @@ def video():
 
 @app.route("/book")
 def book():
-    keys, records, error, submitted_query = [], [], None, ""
+    return render_template("book.html")
 
-    if request.method == "POST":
-        submitted_query = request.form.get("cypher_query")
-        keys, records, error = run_cypher_query(submitted_query)
-
-    return render_template(
-        "book.html",
-        keys=keys,
-        records=records,
-        error=error,
-        query=submitted_query,
-    )
 
 @app.route("/about/")
 def about():
@@ -143,8 +146,8 @@ def Individual_page():
     return render_template("Individual_page.html")
 
 
-@app.route("/visual_art/Individual_page_var")
-def Individual_page_var():
+@app.route("/visual_art/Individual_page_2")
+def Individual_page_2():
     section = request.args.get("section", default=None)
 
     # title = "Title: Zwei Zigeuner"
@@ -154,14 +157,14 @@ def Individual_page_var():
                    der dargestellten Menschen, andererseits reproduziert es stereotype und exotisierende Merkmale. 
                    Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
                 """
-    image_path = "private/Zwei_Zigeuner.png"
+    image_path = "../private/Zwei_Zigeuner.png"
 
     if section == "Objekt_Informationen":
-        return render_template("Individual_page_var.html")
+        return render_template("Individual_page_2.html")
     elif section == "Inhaltliche_Beschreibung":
         try:
             with open(
-                    "templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -170,7 +173,7 @@ def Individual_page_var():
     elif section == "Semantische_Annotation":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -179,7 +182,7 @@ def Individual_page_var():
     elif section == "Semantische_Relationen":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -188,14 +191,14 @@ def Individual_page_var():
     elif section == "Technische_rechtliche":
         try:
             with open(
-                    "templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
         except FileNotFoundError:
             content = "Table file not found."
     else:
-        return render_template("Individual_page_var.html")
+        return render_template("Individual_page_2.html")
 
     # Render the template from templates/test.html
     return render_template(
@@ -208,72 +211,77 @@ def Individual_page_var():
     )
 
 
-#@app.route("/visual_art/Individual_page_var")
-#def Individual_page_var():
-#    return render_template("Individual_page_var.html")
-
-def fetch_object_by_name(name):
-    with driver.session() as session:
-        result = session.run("MATCH (o:Objekt {name: $name}) RETURN o", name=name)
-        record = result.single()
-        if record:
-            return dict(record["o"])
-        return None
-
-@app.route("/book/Roma_Sinti")
-def Roma_Sinti():
-    title = "Roma & Sinti : Zigeuner-Darstellungen der Moderne"
-    artist_info = """
-    Entstehung: frühes 20. Jahrhundert, kurz vor dem Ersten Weltkrieg Ungarn als Teil der Donaumonarchie 
-    mit starken ethnischen Spannungen Zunehmende politische Kontrolle und Militarisierung (z. B. Haarschnitt 
-    der Rekruten ab 1914 als Disziplinierungsmaßnahme) Stigmatisierung und Marginalisierung von Roma-Gruppen 
-    im gesamten europäischen Raum Beginn einer staatlich regulierten Rassifizierung  Ermittlung der Daten…
-    """
-    image_path = "private/Roma_Sinti.png"
-
-    try:
-        with open(
-                "templates/book_roma_all.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
-
-    return render_template(
-        "Individual_page_var.html",
-        title=title,
-        artist_info=artist_info,
-        image_path=image_path,
-        content=content
-    )
-
+@app.route("/visual_art/Individual_page_var")
+def Individual_page_var():
+    return render_template("Individual_page_var.html")
 
 
 @app.route("/visual_art/Zwei_Zigeuner")
 def Zwei_Zigeuner():
     title = "Zwei Zigeuner"
     artist_info = """
-    Das Bild Bild ist ambivalent: Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
-    stereotype und exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
+    Das Bild <a href = "https://en.wikipedia.org/wiki/Bild" target = "_blank" rel = "noopener noreferrer" > Bild </a> ist ambivalent: 
+    Es zeigt einerseits Respekt für die Ästhetik und „Malerhaftigkeit“ der dargestellten Menschen, andererseits reproduziert es 
+    < a href = "https://en.wikipedia.org/wiki/Stereotype" target = "_blank" rel = "noopener noreferrer" > stereotype </a> und
+    exotisierende Merkmale.Es kann sowohl als bewundernde Darstellung als auch als visuelle Festschreibung von „Andersartigkeit“ gelesen werden.
     """
-    image_path = "private/Zwei_Zigeuner.png"
+    image_path = "../private/Zwei_Zigeuner.png"
 
-    try:
-        with open(
-                "templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
+    section = request.args.get("section", default=None)
+
+    if section == "Objekt_Informationen":
+        try:
+            with open(
+                    "../templates/zwei_zigeuner_obj_info.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Inhaltliche_Beschreibung":
+        try:
+            with open(
+                    "../templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Annotation":
+        try:
+            with open(
+                    "../templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Semantische_Relationen":
+        try:
+            with open(
+                    "../templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+    elif section == "Technische_rechtliche":
+        try:
+            with open(
+                    "../templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
+            ) as file:
+                table_html = file.read()
+            content = Markup(table_html)
+        except FileNotFoundError:
+            content = "Table file not found."
+
 
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
-        content=content
+        section=section,
     )
 
 
@@ -284,23 +292,12 @@ def Ilonka():
     Fremdbild vs. Selbstpräsenz: Ilonka wird mit Attributen der „Zigeunerin“ ausgestattet: dunkle Kleidung, Goldschmuck, 
     sinnlicher Blick Deutungsrahmen: Exotisierung – aber: Sie schaut selbstbewusst, konfrontativ zurück
     """
-    image_path = "private/Ilonka.png"
-
-    try:
-        with open(
-                "templates/painting_ilonka_all.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
-
+    image_path = "../private/Ilonka.png"
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
-        content=content
     )
 
 
@@ -314,22 +311,12 @@ def Zigeuner():
         "Schon durch die Benennung wird eine Fremdzuschreibung vorgenommen: Statt den individuellen Namen des Modells zu nennen, wird seine ethnische Zugehörigkeit betont und stereotyp markiert. "
         "Die Wortwahl verstärkt eine folkloristische Rahmung („Zigeuner“ + Pfeife als romantisierende, exotisierende Attribute). Auch wenn das Bild selbst individuelle Würde zeigt, reproduziert der Titel eine kulturelle Distanz und eine Fremddefinition."
     )
-    image_path = "private/Zigeuner.png"
-    try:
-        with open(
-                "templates/painting_zigeuner_all.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
-
+    image_path = "../private/Zigeuner.png"
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
-        content=content
     )
 
 
@@ -342,62 +329,13 @@ def Katze():
         "Fetischisierung weiblicher Romnja-Körper. "
         "Reproduktion kolonialer Zuschreibungen („das Andere“)"
     )
-    image_path = "private/Katze.png"
-
-    try:
-        with open(
-                "templates/painting_katze_all.html", "r", encoding="utf-8"
-        ) as file:
-            table_html = file.read()
-        content = Markup(table_html)
-    except FileNotFoundError:
-        content = "Table file not found."
-
+    image_path = "../private/Katze.png"
     return render_template(
         "Individual_page_var.html",
         title=title,
         artist_info=artist_info,
         image_path=image_path,
-        content=content
     )
-
-@app.route("/index/Metadata/")
-def Metadata():
-    title = "Metadata Description"
-    properties_1 = []
-    with open('data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            properties_1.append((row["Property"], row["text"]))
-
-    properties_2= []
-    with open('data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            properties_2.append((row["Property"], row["text"]))
-
-    properties_3 = []
-    with open('data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            properties_3.append((row["Property"], row["text"]))
-
-    properties_4 = []
-    with open('data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            properties_4.append((row["Property"], row["text"]))
-
-    properties_5 = []
-    with open('data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            properties_5.append((row["Property"], row["text"]))
-
-    return render_template("Metadata_page_var.html", title=title,
-                           properties_1=properties_1, properties_2=properties_2,
-                           properties_3=properties_3, properties_4=properties_4,
-                           properties_5=properties_5)
 
 
 @app.route("/supporters/")
