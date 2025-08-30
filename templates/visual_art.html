@@ -20,6 +20,7 @@
     <script src="{{ url_for('static', filename='js/jquery.detect_swipe.js') }}"></script>
     <script src="{{ url_for('static', filename='js/helper.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/setImageSize.js') }}"></script>
 
 
 
@@ -263,30 +264,7 @@
                 <div class="descendants">
 
 
-                    <div class="box thumbnail-box theatre itembundle clickable-box">
-                        <figure class="itembundle">
-                            <div class="thumbnail theatre ">
-                                <img class="portrait"
-                                     srcset="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }} 1x,
-                                             {{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }} 2x"
-                                     src="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }}">
-                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/image.svg') }}" alt="image"></div>
-                            </div>
 
-                            <figcaption class="theatre">
-                                <p class="name">
-                                    <a class="box-link" href="{{ url_for('Weltausstellung_Paris_1900_1') }}">
-                                        <p>Title: Exposition 1900/ 1900/ L'andalousie/ au/ temps des Maures/ ADMINISTRATION 74 Bd. HAUSSMANN, PARIS 8 <br></p>
-                                    </a>
-                                </p>
-
-                                <p class="additional-info">
-                                    <span class="caption-short">Druckgraphik / Werbeplakat, Alexandre Lunois, 1900</span>
-                                </p>
-                            </figcaption>
-                        </figure>
-
-                    </div>
 
                     <div class="box thumbnail-box theatre itembundle clickable-box">
                         <figure class="itembundle">
@@ -389,7 +367,55 @@
 
                     </div>
 
+                    <div class="box thumbnail-box theatre itembundle clickable-box">
+                        <figure class="itembundle">
+                            <div class="thumbnail theatre ">
+                                <img class="poster"
+                                     srcset="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }} 1x,
+                                             {{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }} 2x"
+                                     src="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_1.jpg') }}">
+                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/image.svg') }}" alt="image"></div>
+                            </div>
 
+                            <figcaption class="theatre">
+                                <p class="name">
+                                    <a class="box-link" href="{{ url_for('Weltausstellung_Paris_1900_1') }}">
+                                        <p>Title: Exposition 1900/ 1900/ L'andalousie/ au/ temps des Maures/ ADMINISTRATION 74 Bd. HAUSSMANN, PARIS 8 <br></p>
+                                    </a>
+                                </p>
+
+                                <p class="additional-info">
+                                    <span class="caption-short">Druckgraphik / Werbeplakat, Alexandre Lunois, 1900</span>
+                                </p>
+                            </figcaption>
+                        </figure>
+
+                    </div>
+
+                    <div class="box thumbnail-box theatre itembundle clickable-box">
+                        <figure class="itembundle">
+                            <div class="thumbnail theatre ">
+                                <img class="poster"
+                                     srcset="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }} 1x,
+                                             {{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }} 2x"
+                                     src="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }}">
+                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/image.svg') }}" alt="image"></div>
+                            </div>
+
+                            <figcaption class="theatre">
+                                <p class="name">
+                                    <a class="box-link" href="{{ url_for('Weltausstellung_Paris_1900_2') }}">
+                                        <p>Title: L’ANDALOUSIE AU TEMPS DES MAURES – LES GITANES <br></p>
+                                    </a>
+                                </p>
+
+                                <p class="additional-info">
+                                    <span class="caption-short">Fotografische Illustration im Bildband, Baschet, Ludovic, 1900</span>
+                                </p>
+                            </figcaption>
+                        </figure>
+
+                    </div>
 
 
 

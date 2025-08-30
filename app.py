@@ -345,6 +345,30 @@ def Weltausstellung_Paris_1900_1():
         content=content
     )
 
+@app.route("/book/Weltausstellung_Paris_1900_2")
+def Weltausstellung_Paris_1900_2():
+    title = "L’ANDALOUSIE AU TEMPS DES MAURES – LES GITANES  "
+    artist_info = """
+    L'Andalousie» , qui occupe au Trocadéro plus de cinq mille mètres, est une des attractions les plus importantes de l'Exposition. Nous voici, après quelques pas, transportés en pleine Espagne; à droite, de vieilles maisons romanes de la province de Tolède; à gauche, peinte en trompe-l'oeil, une vue panoramique de l'Alhambra de Grenade avec le Monte Sacro, refuge des gitanes, aux danses endiablées et aux déhanchements si provocants.  
+    """
+    image_path = "private/TP2_Weltausstellung_Paris_1900_2.jpg"
+
+    try:
+        with open(
+                "templates/poster_Weltausstellung_Paris_1900_2.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
 
 
 @app.route("/visual_art/Zwei_Zigeuner")
