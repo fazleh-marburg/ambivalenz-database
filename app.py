@@ -293,6 +293,30 @@ def Roma_Sinti():
         content=content
     )
 
+@app.route("/book/Gewerbeordnung_1883")
+def Gewerbeordnung_1883():
+    title = "Gewerbeordnung 1883 – Ausführungsbestimmungen"
+    artist_info = """
+    Bekanntmachung des  Handels- und Gewerbewesens vom 31. Oktober 1883 betreffend Ausführungsbestimmungen zur Gewerbeordnung für das Deutsche Reich (Reichs-Gesetzblatt 1883 Seite 177)
+    """
+    image_path = "private/Gewerbeordnung_1883.png"
+
+    try:
+        with open(
+                "templates/book_gewerbeordnung_1883_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
 
 
 @app.route("/visual_art/Zwei_Zigeuner")
