@@ -318,6 +318,34 @@ def Gewerbeordnung_1883():
         content=content
     )
 
+@app.route("/book/Weltausstellung_Paris_1900_1")
+def Weltausstellung_Paris_1900_1():
+    title = "Exposition 1900/ 1900/ L'andalousie/ au/ temps des Maures/ ADMINISTRATION 74 Bd. HAUSSMANN, PARIS 8 "
+    artist_info = """
+    Überlebensgroßes Werbeplakat für die Ausstellung L'Andalousie au temps des Maures (Andalusien zur Zeit der Mauren) auf der Weltausstellung 1900 in Paris.
+    Inhaltliche Beschreibung laut Archiv: "Gitane lisant dans la main d'une Espagnole, groupe d'Espagnoles, décor d'inspiration mauresque" (Gitane, die einer Spanierin aus der Hand liest; Gruppe spanischer Frauen; maurisch inspiriertes Dekor).
+    Das Plakat kündigt in Figur der alten Handleserin das Unterhaltungsangebot der Wahrsagerei im Programm der Ausstellung an. Zugleich wirbt das Plakat für spanische Tanz-Auftritte in Figur der jungen Spanierin mit den Attributen Manila-Tuch, Volantrock, Fächer und Blume im Haar. Der Gegensatz zwischen der jungen und der alten Frau im Kontext der Wahrsagerei ruft die Figur der La Celestina, der legendären spanischen Kupplerin aus Fernando de Rojas gleichnamiger Tragikomödie (1499), auf. Am unteren Plakatrand ist die Adresse der französischen Betreibergesellschaft der Ausstellung angegeben. Das Plakat ist eines von mehreren Werbeplakaten für die Ausstellung, die von Mitgliedern der Société des Peintres Orientalistes Français gestaltet wurden.
+    """
+    image_path = "private/TP2_Weltausstellung_Paris_1900_1.jpg"
+
+    try:
+        with open(
+                "templates/poster_Weltausstellung_Paris_1900_1.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+
 
 @app.route("/visual_art/Zwei_Zigeuner")
 def Zwei_Zigeuner():
