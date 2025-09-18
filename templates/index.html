@@ -63,21 +63,37 @@
                      <button class="collapse"><img src="{{ url_for('static', filename='images/open-vertical.svg') }}" alt="collapse"></button>
                   </div>
                   <ul class="menu">
-                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Visual Art</a></li>
-                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li>
-                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Painting</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('poster') }}">Poster</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('portrait') }}">Portrait</a></li>
+                     <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li-->
+                     <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li-->
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
-                     <li class="box clickable-box"><a class="box-link" href="http://127.0.0.1:7474/browser/">Graph Database</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('article') }}">Scientific Article</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('song') }}">Song</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('poem') }}">Poem</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('legal_text') }}">Legal Text</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('Person') }}">Person</a></li>
+
+                     <li class="box clickable-box"><a class="box-link" href="http://127.0.0.1:7474/browser/">Graph</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('logout') }}">Logout</a></li>
                      <!-- External URL is fine -->
                   </ul>
                </li>
-               <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Visual Art</a></li>
-               <li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li>
-               <li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Painting</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('poster') }}">Poster</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('portrait') }}">Portrait</a></li>
+               <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li-->
+               <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li-->
                <li class="box clickable-box"><a class="box-link" href="{{ url_for('book') }}">Book</a></li>
-               <li class="box clickable-box"><a class="box-link" href="http://127.0.0.1:7474/browser/">Graph Database</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('article') }}">Scientific Article</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('song') }}">Song</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('poem') }}">Poem</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('legal_text') }}">Legal Text</a></li>
+               <li class="box clickable-box"><a class="box-link" href="{{ url_for('Person') }}">Person</a></li>
+
+               <li class="box clickable-box"><a class="box-link" href="http://127.0.0.1:7474/browser/">Graph</a></li>
                <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
                <li class="box clickable-box"><a class="box-link" href="{{ url_for('logout') }}">Logout</a></li>
                <!-- External URL is fine -->
@@ -233,11 +249,17 @@
             </div>
             <nav class="curatorial-sections">
                <ul class="menu">
-                  <li class="visual-arts"><a href="{{ url_for('visual_art') }}">Visual Art</a></li>
-                  <li class="film"><a href="{{ url_for('audio') }}">Audio</a></li>
-                  <li class="music"><a href="{{ url_for('video') }}">Video</a></li>
+                  <li class="visual-arts"><a href="{{ url_for('visual_art') }}">Painting</a></li>
+                  <li class="visual-arts"><a href="{{ url_for('poster') }}">Poster</a></li>
+                  <li class="visual-arts"><a href="{{ url_for('portrait') }}">Portrait</a></li>
+                  <!--li class="film"><a href="{{ url_for('audio') }}">Audio</a></li-->
+                  <!--li class="music"><a href="{{ url_for('video') }}">Video</a></li-->
                   <li class="music"><a href="{{ url_for('book') }}">Book</a></li>
-                  <li class="music"><a href="http://137.248.186.54:7474/browser/">Graph Database</a></li>
+                  <li class="music"><a href="{{ url_for('article') }}">Scientific Article</a></li>
+                  <li class="music"><a href="{{ url_for('song') }}">Song</a></li>
+                  <li class="music"><a href="{{ url_for('poem') }}">Poem</a></li>
+                  <li class="box clickable-box"><a class="box-link" href="{{ url_for('legal_text') }}">Legal Text</a></li>
+                  <li class="music"><a href="http://137.248.186.54:7474/browser/">Graph</a></li>
                   <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
                </ul>
             </nav>

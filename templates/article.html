@@ -80,6 +80,7 @@
                         <button class="collapse"><img src="{{ url_for('static', filename='images/open-vertical.svg') }}" alt="collapse"></button>
                     </div>
                     <ul class="menu">
+
                         <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Painting</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('poster') }}">Poster</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('portrait') }}">Portrait</a></li>
@@ -99,7 +100,7 @@
                     </ul>
                 </li>
                 <li class="box clickable-box"><a class="box-link" href="{{ url_for('visual_art') }}">Painting</a></li>
-                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('poster') }}">Poster</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('poster') }}">Poster</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('portrait') }}">Portrait</a></li>
                      <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('audio') }}">Audio</a></li-->
                      <!--li class="box clickable-box"><a class="box-link" href="{{ url_for('video') }}">Video</a></li-->
@@ -108,12 +109,11 @@
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('song') }}">Song</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('poem') }}">Poem</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('legal_text') }}">Legal Text</a></li>
-                               <li class="box clickable-box"><a class="box-link" href="{{ url_for('Person') }}">Person</a></li>
+                     <li class="box clickable-box"><a class="box-link" href="{{ url_for('Person') }}">Person</a></li>
 
                      <li class="box clickable-box"><a class="box-link" href="http://127.0.0.1:7474/browser/">Graph</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('Metadata') }}">Metadata</a></li>
                      <li class="box clickable-box"><a class="box-link" href="{{ url_for('logout') }}">Logout</a></li>
-
 
                 <li class="secondary submenu collapsed">
 
@@ -258,85 +258,31 @@
             <section class="results itembundles">
                 <div class="descendants">
 
-                                       <div class="box thumbnail-box theatre itembundle clickable-box">
-                        <figure class="itembundle">
-                            <div class="thumbnail theatre ">
-                                <img class="poster"
-                                     srcset="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }} 1x,
-                                             {{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }} 2x"
-                                     src="{{ url_for('static', filename='private/TP2_Weltausstellung_Paris_1900_2.jpg') }}">
-                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/book.png') }}" alt="image"></div>
-                            </div>
-
-                            <figcaption class="theatre">
-                                <p class="name">
-                                    <a class="box-link" href="{{ url_for('Weltausstellung_Paris_1900_2') }}">
-                                        <p>Title: L’ANDALOUSIE AU TEMPS DES MAURES – LES GITANES <br></p>
-                                    </a>
-                                </p>
-
-                                <p class="additional-info">
-                                    <span class="caption-short">Fotografische Illustration im Bildband, Baschet, Ludovic, 1900</span>
-                                </p>
-                            </figcaption>
-                        </figure>
-
-                    </div>
-
-
-
-
-
-
-
                     <div class="box thumbnail-box theatre itembundle clickable-box">
                         <figure class="itembundle">
                             <div class="thumbnail theatre ">
                                 <img class="portrait"
-                                     srcset="{{ url_for('static', filename='private/Roma_Sinti.png') }} 1x,
-                                             {{ url_for('static', filename='private/Roma_Sinti.png') }} 2x"
-                                     src="{{ url_for('static', filename='private/Roma_Sinti.png') }}">
-                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/book.png') }}" alt="image"></div>
+                                     srcset="{{ url_for('static', filename='private/Zigeunern_Q2_TH.png') }} 1x,
+                                             {{ url_for('static', filename='private/Zigeunern_Q2_TH.png') }} 2x"
+                                     src="{{ url_for('static', filename='private/Zigeunern_Q2_TH.png') }}">
+                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/article.png') }}" alt="image"></div>
                             </div>
                             <figcaption class="theatre">
                                 <p class="name">
-                                    <a class="box-link" href="{{ url_for('Roma_Sinti') }}">
-                                        <p>Title: Roma & Sinti : "Zigeuner-Darstellungen" der Moderne<br></p>
+                                    <a class="box-link" href="{{ url_for('article_Zigeunern_Q2_TH') }}">
+                                        <p>Der Seelenloskauf bei den mohammedanischen Zigeunern der Balkanländer <br></p>
                                     </a>
                                 </p>
 
                                 <p class="additional-info">
-                                    <span class="caption-short">Gerhard Baumgartner (X)</span>
+                                    <span class="caption-short">wissenschaftlicher Artikel , Heinrich Albrecht von Wlislocki, 1894</span>
                                 </p>
                             </figcaption>
                         </figure>
 
                     </div>
 
-                   <div class="box thumbnail-box theatre itembundle clickable-box">
-                        <figure class="itembundle">
-                            <div class="thumbnail theatre ">
-                                <img class="poster"
-                                     srcset="{{ url_for('static', filename='private/Zigeuner_Bukarest.png') }} 1x,
-                                             {{ url_for('static', filename='private/Zigeuner_Bukarest.png') }} 2x"
-                                     src="{{ url_for('static', filename='private/Roma_Sinti.png') }}">
-                                <div class="type-icon theatre"><img src="{{ url_for('static', filename='images/book.png') }}" alt="image"></div>
-                            </div>
 
-                            <figcaption class="theatre">
-                                <p class="name">
-                                    <a class="box-link" href="{{ url_for('Zigeuner_Bukarest') }}">
-                                        <p>Title: Zigeuner" auf Baustellen in Bukarest <br></p>
-                                    </a>
-                                </p>
-
-                                <p class="additional-info">
-                                    <span class="caption-short">Litertur/Belletristik, Karl Friedrich Ströher, (unknown)</span>
-                                </p>
-                            </figcaption>
-                        </figure>
-
-                    </div>
 
 
                 </div>

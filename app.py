@@ -128,6 +128,123 @@ def book():
         query=submitted_query,
     )
 
+@app.route("/article")
+def article():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "article.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+@app.route("/poem")
+def poem():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "poem.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+@app.route("/song")
+def song():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "song.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+
+@app.route("/legal_text")
+def legal_text():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "legal_text.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+@app.route("/Person")
+def Person():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "Person.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+
+@app.route("/poster")
+def poster():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "poster.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+
+
+@app.route("/portrait")
+def portrait():
+    keys, records, error, submitted_query = [], [], None, ""
+
+    if request.method == "POST":
+        submitted_query = request.form.get("cypher_query")
+        keys, records, error = run_cypher_query(submitted_query)
+
+    return render_template(
+        "portrait.html",
+        keys=keys,
+        records=records,
+        error=error,
+        query=submitted_query,
+    )
+
+
 @app.route("/about/")
 def about():
     return render_template("about.html")
@@ -293,7 +410,33 @@ def Roma_Sinti():
         content=content
     )
 
-@app.route("/book/Gewerbeordnung_1883")
+@app.route("/book/Zigeuner_Bukarest")
+def Zigeuner_Bukarest():
+    title = "Zigeuner auf Baustellen in Bukarest"
+    artist_info = """
+    Der Hunsrücker Maler verdient sein Geld mit Malerarbeiten in Neubauten und beschreibt die Zustände und Rangordnung +auf Baustellen in Bukarest. Auffällig lang ist seine Charakterisierung der Roma
+    """
+    image_path = "private/Zigeuner_Bukarest.png"
+
+    try:
+        with open(
+                "templates/book_Zigeuner_Bukarest.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+
+@app.route("/legal_text/Gewerbeordnung_1883")
 def Gewerbeordnung_1883():
     title = "Gewerbeordnung 1883 – Ausführungsbestimmungen"
     artist_info = """
@@ -318,7 +461,84 @@ def Gewerbeordnung_1883():
         content=content
     )
 
-@app.route("/book/Weltausstellung_Paris_1900_1")
+
+@app.route("/legal_text/Gewerbeordnung_1904")
+def Gewerbeordnung_1904():
+    title = "Preußische Ausführungsanordnung zur Gewerbeordnung des Deutschen Reichs vom 1. Mai 1904"
+    artist_info = """
+    Versagen von Wandergewerbescheinen bei inländischen Personen, die als "Zigeuner" gelabelt werden; Markieren von Wandergewerbescheinen mit dem Zustaz "Zigeuner" oder wenn Eigenschaft nicht fesstellbar mit dem Zusatz "Zieht nach Zigeunerart im Land umher"
+    """
+    image_path = "private/Gewerbeordnung_1904.png"
+
+    try:
+        with open(
+                "templates/legal_text_gewerbeordnung_1904.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/portrait/portrait_flower_1")
+def portrait_flower_1():
+    title = "Zigeunerinnen mit Sonnenblumen"
+    artist_info = """
+    Expressionistische Darstellung dreier Figuren in einer ländlichen Szene. Es handelt sich um zwei Frauen und ein Baby. Figuren und Objekte sind teils stark vereinfacht dargestellt. 
+    Im Zentrum steht eine aufrecht stehende Frau mit dunkler Haut, kurzem schwarzen Haar und einem langen, hellen, mit Punkten besetzten Gewand. Die Hände hält sie vor der Brust verschränkt. Rechts unten sitzt eine zweite, ebenfalls dunkelhäutige Frau mit leuchtend gelbem Kopftuch und Oberteil und einem braun-blau gestreiftem Rock. Sie stillt ein Baby.
+    Links neben der stehenden Frau ragt eine große Sonnenblume ins Bild. Im Hintergrund sieht man weiß verputzte Häuser mit orangefarbenen Dächern, grüne Bäume und ein Pferd.
+    """
+    image_path = "private/portrait_flower_1.jpeg"
+
+    try:
+        with open(
+                "templates/portrait_flower_1.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+@app.route("/portrait/portrait_person_2")
+def portrait_person_2():
+    title = "Zigeuner"
+    artist_info = """
+    Porträt eines jungen Mannes. Er trägt bürgerliche Kleidung: kariertes Jackett mit einem gelb-bräunlichen Karomuster auf einem dunkelbraunen Grundton, weißes Hemd und blaue Krawatte. Auf der linken Seite des Jacketts befindet sich ein Flicken. Der Mann hat dunkles, glänzendes, lockiges Haar, das rechts gescheitelt ist. Sein Blick ist noch vorne gerichtet. Er hat buschige Augenbraun und einen angedeuteten Schnurrbart. Der Hintergrund des Bilds ist grau. 
+    """
+    image_path = "private/portrait_person_2.jpeg"
+
+    try:
+        with open(
+                "templates/portrait_person_2.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/poster/Weltausstellung_Paris_1900_1")
 def Weltausstellung_Paris_1900_1():
     title = "Exposition 1900/ 1900/ L'andalousie/ au/ temps des Maures/ ADMINISTRATION 74 Bd. HAUSSMANN, PARIS 8 "
     artist_info = """
@@ -370,6 +590,80 @@ def Weltausstellung_Paris_1900_2():
         content=content
     )
 
+@app.route("/song/Nordungarn_Q1_TH")
+def Nordungarn_Q1_TH():
+    title = "Zigeunertaufe in Nordungarn"
+    artist_info = """
+    Beschreibung von Ritualen der Roma die vor der klassischen Kirchlichen Taufe, von Familie, Verwandten, Paten  und in der ganzen Gemeinschaft abgehlten werden. 
+    """
+    image_path = "private/Nordungarn_Q1_TH.png"
+
+    try:
+        with open(
+                "templates/song_Nordungarn_Q1_TH.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/article/article_Zigeunern_Q2_TH")
+def article_Zigeunern_Q2_TH():
+    title = "Der Seelenloskauf bei den mohammedanischen Zigeunern der Balkanländer "
+    artist_info = """
+         Beschreibung von Totenritualen und Eheritualen von moslimischen Seeshaften und "Wanderzigeunern    
+         """
+    image_path = "private/Zigeunern_Q2_TH.png"
+
+    try:
+        with open(
+                "templates/article_Zigeunern_Q2_TH.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/article/Zigeunerisch_Q3_TH")
+def Zigeunerisch_Q3_TH():
+    title = "Zigeunerisch "
+    artist_info = """
+         Das Gedicht behandelt den Jahreszeitenwechsel und den Alltags, Liebes-, Arbeitsleben der Roma. Es will die Lebensweise der "Zeltzigeuner" romantisch und tragisch wieder geben. In ihm  tauchen die Beziehungen zu Leben und Tod und die Lebensbedingungen der Roma auf und was mit dem Gedicht als typisch "Zigeunerisch" hervorgehoben wird, wie der Titel es schon vermeldet.     
+         """
+    image_path = "private/Zigeunerisch_Q3_TH.png"
+
+    try:
+        with open(
+                "templates/poem-Zigeunerisch_Q3_TH.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
 
 @app.route("/visual_art/Zwei_Zigeuner")
 def Zwei_Zigeuner():
@@ -481,6 +775,108 @@ def Katze():
         image_path=image_path,
         content=content
     )
+
+
+@app.route("/visual_art/Zigeunerin")
+def Zigeunerin():
+    title = "Zigeunerin"
+    artist_info = """
+        Eine Frau posiert Frau braunem Hintergrund und Vorhang links vor dem ein Schemel über den ein buntes Gewand geworfen ist. Sie dreht den Rücken zum Betrachter, während ihr Gesicht  im Profil zu sehen ist und ihr Arm unter einem grünen übergeschlagenen Tuch in die Seite gestützt ist. Darunter trägt sie ein rosa Kleid mit weißen Partien.   
+        """
+    image_path = "private/Zigeunerin.png"
+
+    try:
+        with open(
+                "templates/painting_Zigeunerin_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/visual_art/Zigeunerpaar")
+def Zigeunerpaar():
+    title = "Zigeunerpaar"
+    artist_info = """
+      Paar in leichter Draufsicht und grellem Sonnenlicht mit Schattenpartien gezeigt. Beide tragen bunte Kleidung, die Frau in farbenfroher Tracht blickt aus dem Bild heraus, während der Mann mit Hut zu ihr schaut. Das Gemälde ist einem pointillistischen Stil, indem die Pinselschläge an Mosaik erinnern. 
+        """
+    image_path = "private/Zigeunerpaar.png"
+
+    try:
+        with open(
+                "templates/painting_Zigeunerpaar_all.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/Person/Person_Friedrich")
+def Person_Friedrich():
+    title = "Ströher, Friedrich Karl"
+    artist_info = """
+    Olga auf grüner Wiese, 1910 | Brücke in Paris mit Omnibus, 1904 | Spanierin beim Nähen, 1912, Kornerde vor Irmenach, 1924 | Gefallenen-Ehrenmale in Irmenach und Hirschfeld (letzteres 1933 als unheroisch abgebaut) | Veröffentlichungen: Erinnerungen 1876-1911, MS | Reise nach Südfrankreich 1910, Manuskript | Irmenach 1923/25 Irmenach - in: Archiv für bildende Kunst, Germanisches Nationalmuseum Nürnberg | Privater Nachlaß: Peter Ströher (Sohn) | Sammlung Ströher (Dauerleihgabe) im Hunsrück-Museum, Schloß Simmern
+        """
+    image_path = "private/Friedrich.png"
+
+    try:
+        with open(
+                "templates/Person_Friedrich.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+@app.route("/Person/Person_Kampf")
+def Person_Kampf():
+    title = "Prof. Dr. Arthur Kampf"
+    artist_info = """
+        """
+    image_path = "private/Kampf.png"
+
+    try:
+        with open(
+                "templates/Person_Kampf.html", "r", encoding="utf-8"
+        ) as file:
+            table_html = file.read()
+        content = Markup(table_html)
+    except FileNotFoundError:
+        content = "Table file not found."
+
+    return render_template(
+        "Individual_page_var.html",
+        title=title,
+        artist_info=artist_info,
+        image_path=image_path,
+        content=content
+    )
+
+
 
 @app.route("/index/Metadata/")
 def Metadata():

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     portraits.forEach(img => {
         img.style.width = "500px";      // doubled width
-        img.style.height = "250px";     // fixed height
+        img.style.height = "400px";     // increased height
         img.style.objectFit = "cover";  // crop to fit without distortion
         img.style.borderRadius = "6px"; // optional: rounded corners
     });
