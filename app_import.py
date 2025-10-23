@@ -21,7 +21,7 @@ if not os.path.exists(EXCEL_FILE):
 @app.route('/')
 def form():
     fields = get_field_list()
-    return render_template("object_form_4.html", fields=fields, data={})
+    return render_template("object_form_import.html", fields=fields, data={})
 
 
 @app.route('/upload', methods=['POST'])
