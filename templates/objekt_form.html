@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Objekt Informationen Eingabeformular</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            padding: 40px;
+        }
+        h2 {
+            color: #222;
+        }
+        table.property-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #fff;
+        }
+        table.property-table th, table.property-table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            vertical-align: top;
+        }
+        table.property-table th {
+            background-color: #f0f0f0;
+            color: #333;
+            text-align: left;
+        }
+        .col1 {
+            width: 30%;
+            background-color: #f9f9f9;
+            font-weight: bold;
+        }
+        .col2 input[type="text"], .col2 textarea {
+            width: 98%;
+            padding: 6px;
+            font-size: 14px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .submit-btn, .add-row-btn {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .add-row-btn {
+            background-color: #2196F3;
+            color: white;
+            margin-right: 10px;
+        }
+        .add-row-btn:hover {
+            background-color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Objekt Informationen</h2>
+
+    <form method="POST" action="{{ url_for('submit') }}">
+        <table class="property-table" id="propertyTable">
+            <thead>
+                <tr class="row-height">
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for field in fields %}
+                <tr class="row-height">
+                    <td class="col1">{{ field }}</td>
+                    <td class="col2">
+                        {% if "Beschreibung" in field or "Objekt-" in field or "Narrativ" in field or "Kommentar" in field %}
+                            <textarea name="{{ field }}" rows="3"></textarea>
+                        {% else %}
+                            <input type="text" name="{{ field }}">
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="button" class="add-row-btn" onclick="addRow()">+ Neue Zeile hinzufügen</button>
+        <button type="submit" class="submit-btn">Daten speichern</button>
+    </form>
+
+    <script>
+        let rowCount = {{ fields|length }};
+
+        function addRow() {
+            const tableBody = document.querySelector("#propertyTable tbody");
+
+            // Create new table row
+            const newRow = document.createElement("tr");
+            newRow.classList.add("row-height");
+
+            // Property cell
+            const propertyCell = document.createElement("td");
+            propertyCell.classList.add("col1");
+            const propertyInput = document.createElement("input");
+            propertyInput.type = "text";
+            propertyInput.name = "custom_property_" + rowCount;
+            propertyInput.placeholder = "Neues Feld eingeben...";
+            propertyInput.style.width = "95%";
+            propertyCell.appendChild(propertyInput);
+
+            // Value cell
+            const valueCell = document.createElement("td");
+            valueCell.classList.add("col2");
+            const valueInput = document.createElement("input");
+            valueInput.type = "text";
+            valueInput.name = "custom_value_" + rowCount;
+            valueInput.placeholder = "Wert eingeben...";
+            valueInput.style.width = "98%";
+            valueCell.appendChild(valueInput);
+
+            newRow.appendChild(propertyCell);
+            newRow.appendChild(valueCell);
+            tableBody.appendChild(newRow);
+
+            rowCount++;
+        }
+    </script>
+
+</body>
+</html>
