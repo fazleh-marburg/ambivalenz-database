@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="es">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="es">
+<![endif]-->
+<!--[if !(IE 7) & !(IE 8)]><!-->
+<html lang="es"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matching text-image pairs by using CLIP | Procesado Avanzado de Señales y Datos</title>
+<link rel="profile" href="https://gmpg.org/xfn/11">
+
+<!--[if lt IE 9]>
+<script src="https://blogs.upm.es/pasd/wp-content/themes/twentytwelve/js/html5.js?ver=3.7.0" type="text/javascript"></script>
+<![endif]-->
+<meta name="robots" content="max-image-preview:large">
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	<link rel="dns-prefetch" href="https://static.addtoany.com/">
+<link rel="alternate" type="application/rss+xml" title="Procesado Avanzado de Señales y Datos » Feed" href="https://blogs.upm.es/pasd/feed/">
+<link rel="alternate" type="application/rss+xml" title="Procesado Avanzado de Señales y Datos » Feed de los comentarios" href="https://blogs.upm.es/pasd/comments/feed/">
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blogs.upm.es\/pasd\/wp-includes\/js\/wp-emoji-release.min.js"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\ud83d\udd25","\ud83d\udc26\u200b\ud83d\udd25")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<style id="wp-emoji-styles-inline-css" type="text/css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel="stylesheet" id="wp-block-library-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/style.min.css" type="text/css" media="all">
+<style id="wp-block-library-theme-inline-css" type="text/css">
+.wp-block-audio :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio :where(figcaption){color:#ffffffa6}.wp-block-audio{margin:0 0 1em}.wp-block-code{border:1px solid #ccc;border-radius:4px;font-family:Menlo,Consolas,monaco,monospace;padding:.8em 1em}.wp-block-embed :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed :where(figcaption){color:#ffffffa6}.wp-block-embed{margin:0 0 1em}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:#ffffffa6}:root :where(.wp-block-image figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme :root :where(.wp-block-image figcaption){color:#ffffffa6}.wp-block-image{margin:0 0 1em}.wp-block-pullquote{border-bottom:4px solid;border-top:4px solid;color:currentColor;margin-bottom:1.75em}.wp-block-pullquote cite,.wp-block-pullquote footer,.wp-block-pullquote__citation{color:currentColor;font-size:.8125em;font-style:normal;text-transform:uppercase}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;font-style:normal;position:relative}.wp-block-quote:where(.has-text-align-right){border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote:where(.has-text-align-center){border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large,.wp-block-quote:where(.is-style-plain){border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-search__button{border:1px solid #ccc;padding:.375em .625em}:where(.wp-block-group.has-background){padding:1.25em 2.375em}.wp-block-separator.has-css-opacity{opacity:.4}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto}.wp-block-separator.has-alpha-channel-opacity{opacity:1}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table{margin:0 0 1em}.wp-block-table td,.wp-block-table th{word-break:normal}.wp-block-table :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table :where(figcaption){color:#ffffffa6}.wp-block-video :where(figcaption){color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video :where(figcaption){color:#ffffffa6}.wp-block-video{margin:0 0 1em}:root :where(.wp-block-template-part.has-background){margin-bottom:0;margin-top:0;padding:1.25em 2.375em}
+</style>
+<style id="classic-theme-styles-inline-css" type="text/css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id="global-styles-inline-css" type="text/css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #fff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--blue: #21759b;--wp--preset--color--dark-gray: #444;--wp--preset--color--medium-gray: #9f9f9f;--wp--preset--color--light-gray: #e6e6e6;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel="stylesheet" id="rfw-style-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-biographia-bio-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/wp-biographia.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentytwelve-fonts-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/font-open-sans.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentytwelve-style-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentytwelve-block-style-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/blocks.css" type="text/css" media="all">
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentytwelve-ie-css' href='https://blogs.upm.es/pasd/wp-content/themes/twentytwelve/css/ie.css' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="addtoany-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/addtoany.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="moove_gdpr_frontend-css" href="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/gdpr-main.css" type="text/css" media="all">
+<style id="moove_gdpr_frontend-inline-css" type="text/css">
+#moove_gdpr_cookie_modal,#moove_gdpr_cookie_info_bar,.gdpr_cookie_settings_shortcode_content{font-family:Nunito,sans-serif}#moove_gdpr_save_popup_settings_button{background-color:#373737;color:#fff}#moove_gdpr_save_popup_settings_button:hover{background-color:#000}#moove_gdpr_cookie_info_bar .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton,#moove_gdpr_cookie_info_bar .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton{background-color:#0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder a.mgbutton,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder button.mgbutton,.gdpr_cookie_settings_shortcode_content .gdpr-shr-button.button-green{background-color:#0C4DA2;border-color:#0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder a.mgbutton:hover,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-footer-content .moove-gdpr-button-holder button.mgbutton:hover,.gdpr_cookie_settings_shortcode_content .gdpr-shr-button.button-green:hover{background-color:#fff;color:#0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close span.gdpr-icon{background-color:#0C4DA2;border:1px solid #0C4DA2}#moove_gdpr_cookie_info_bar span.change-settings-button.focus-g,#moove_gdpr_cookie_info_bar span.change-settings-button:focus,#moove_gdpr_cookie_info_bar button.change-settings-button.focus-g,#moove_gdpr_cookie_info_bar button.change-settings-button:focus{-webkit-box-shadow:0 0 1px 3px #0C4DA2;-moz-box-shadow:0 0 1px 3px #0C4DA2;box-shadow:0 0 1px 3px #0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close i:hover,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close span.gdpr-icon:hover,#moove_gdpr_cookie_info_bar span[data-href]>u.change-settings-button{color:#0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected a span.gdpr-icon,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li.menu-item-selected button span.gdpr-icon{color:inherit}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li a span.gdpr-icon,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li button span.gdpr-icon{color:inherit}#moove_gdpr_cookie_modal .gdpr-acc-link{line-height:0;font-size:0;color:transparent;position:absolute}#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-close:hover i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li a,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li button,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li button i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-modal-left-content #moove-gdpr-menu li a i,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-tab-main .moove-gdpr-tab-main-content a:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content span.change-settings-button:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.change-settings-button:hover,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content u.change-settings-button:hover,#moove_gdpr_cookie_info_bar span[data-href]>u.change-settings-button,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton.focus-g,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton.focus-g,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.focus-g,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.focus-g,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a.mgbutton:focus,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button.mgbutton:focus,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content a:focus,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content button:focus,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content span.change-settings-button.focus-g,span.change-settings-button:focus,button.change-settings-button.focus-g,button.change-settings-button:focus,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content u.change-settings-button.focus-g,#moove_gdpr_cookie_info_bar.moove-gdpr-dark-scheme .moove-gdpr-info-bar-container .moove-gdpr-info-bar-content u.change-settings-button:focus{color:#0C4DA2}#moove_gdpr_cookie_modal .moove-gdpr-branding.focus-g span,#moove_gdpr_cookie_modal .moove-gdpr-modal-content .moove-gdpr-tab-main a.focus-g{color:#0C4DA2}#moove_gdpr_cookie_modal.gdpr_lightbox-hide{display:none}
+</style>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/jquery.min.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/jquery-migrate.min.js" id="jquery-migrate-js"></script>
+<script type="text/javascript" id="addtoany-core-js-before">
+/* <![CDATA[ */
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};a2a_localize = {
+	Share: "Compartir",
+	Save: "Guardar",
+	Subscribe: "Suscribir",
+	Email: "Correo electrónico",
+	Bookmark: "Marcador",
+	ShowAll: "Mostrar todo",
+	ShowLess: "Mostrar menos",
+	FindServices: "Encontrar servicio(s)",
+	FindAnyServiceToAddTo: "Encuentra al instante cualquier servicio para añadir a",
+	PoweredBy: "Funciona con",
+	ShareViaEmail: "Compartir por correo electrónico",
+	SubscribeViaEmail: "Suscribirse a través de correo electrónico",
+	BookmarkInYourBrowser: "Añadir a marcadores de tu navegador",
+	BookmarkInstructions: "Presiona «Ctrl+D» o «\u2318+D» para añadir esta página a marcadores",
+	AddToYourFavorites: "Añadir a tus favoritos",
+	SendFromWebOrProgram: "Enviar desde cualquier dirección o programa de correo electrónico ",
+	EmailProgram: "Programa de correo electrónico",
+	More: "Más&#8230;",
+	ThanksForSharing: "¡Gracias por compartir!",
+	ThanksForFollowing: "¡Gracias por seguirnos!"
+};
+/* ]]> */
+</script>
+<script type="text/javascript" defer="defer" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/page.js" id="addtoany-core-js"></script>
+<script type="text/javascript" defer="defer" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/addtoany.min.js" id="addtoany-jquery-js"></script>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/navigation.js" id="twentytwelve-navigation-js" defer="defer" data-wp-strategy="defer"></script>
+<link rel="https://api.w.org/" href="https://blogs.upm.es/pasd/wp-json/"><link rel="alternate" title="JSON" type="application/json" href="https://blogs.upm.es/pasd/wp-json/wp/v2/posts/86"><link rel="canonical" href="https://blogs.upm.es/pasd/2023/06/12/matching-text-image-pairs-by-using-clip/">
+<link rel="shortlink" href="https://blogs.upm.es/pasd/?p=86">
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://blogs.upm.es/pasd/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.upm.es%2Fpasd%2F2023%2F06%2F12%2Fmatching-text-image-pairs-by-using-clip%2F">
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://blogs.upm.es/pasd/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblogs.upm.es%2Fpasd%2F2023%2F06%2F12%2Fmatching-text-image-pairs-by-using-clip%2F&amp;format=xml">
+
+
+<style type="text/css">
+p.cc-block { clear: both; width: 90%; margin: 8px auto; padding: 4px; text-align: center; border: 1px solid #cccccc; color: #000000; background-color: #eef6e6; }
+p.cc-block a:link, p.cc-block a:visited, p.cc-block a:hover, p.cc-block a:active { text-decoration: underline; color: #000000; border: none;}
+.cc-button { display: block; margin-left: auto; margin-right: auto; margin-top: 6px; margin-bottom: 6px; border-width: 0; }
+.wp-caption { border: 0; }
+.widget_bccl_widget { text-align: center; }
+</style>
+
+
+
+<script src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/core.pt5ow5lr.js" type="module"></script><style type="text/css">.a2a_hide{display:none}.a2a_logo_color{background-color:#0166ff}.a2a_menu,.a2a_menu *{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;float:none;margin:0;padding:0;position:static;height:auto;width:auto}.a2a_menu{border-radius:6px;display:none;direction:ltr;background:#FFF;font:16px sans-serif-light,HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Arial,Helvetica,"Liberation Sans",sans-serif;color:#000;line-height:12px;border:1px solid #CCC;vertical-align:baseline;overflow:hidden}.a2a_mini{min-width:200px;position:absolute;width:300px;z-index:9999997}.a2a_overlay{display:none;background:#616c7deb;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);position:fixed;top:0;right:0;left:0;bottom:0;z-index:9999998;-webkit-tap-highlight-color:transparent;transition:opacity .14s,backdrop-filter .14s}.a2a_full{background:#FFF;border:1px solid #FFF;box-shadow:#2a2a2a1a 0 0 20px 10px;height:auto;height:calc(320px);top:15%;left:50%;margin-left:-320px;position:fixed;text-align:center;width:640px;z-index:9999999;transition:transform .14s,opacity .14s}.a2a_full_footer,.a2a_full_header,.a2a_full_services{border:0;margin:0;padding:12px;box-sizing:border-box}.a2a_full_header{padding-bottom:8px}.a2a_full_services{height:280px;overflow-y:scroll;padding:0 12px;-webkit-overflow-scrolling:touch}.a2a_full_services .a2a_i{display:inline-block;float:none;width:181px;width:calc(33.334% - 18px)}div.a2a_full_footer{font-size:12px;text-align:center;padding:8px 14px}div.a2a_full_footer a,div.a2a_full_footer a:visited{display:inline;font-size:12px;line-height:14px;padding:8px 14px}div.a2a_full_footer a:focus,div.a2a_full_footer a:hover{background:0 0;border:0;color:#0166FF}div.a2a_full_footer a span.a2a_s_a2a,div.a2a_full_footer a span.a2a_w_a2a{background-size:14px;border-radius:3px;display:inline-block;height:14px;line-height:14px;margin:0 3px 0 0;vertical-align:top;width:14px}.a2a_modal{height:0;left:50%;margin-left:-320px;position:fixed;text-align:center;top:15%;width:640px;z-index:9999999;transition:transform .14s,opacity .14s;-webkit-tap-highlight-color:transparent}.a2a_modal_body{background:0 0;border:0;font:24px sans-serif-light,HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Arial,Helvetica,"Liberation Sans",sans-serif;position:relative;height:auto;width:auto}.a2a_thanks{color:#fff;height:auto;margin-top:20px;width:auto}.a2a_thanks>div:first-child{margin:0 0 40px 0}.a2a_thanks div *{height:inherit}#a2a_copy_link{background:#FFF;border:1px solid #FFF;cursor:pointer;margin-top:15%}label.a2a_s_link#a2a_copy_link_icon,label.a2a_w_link#a2a_copy_link_icon{background-size:48px;border-radius:0;display:inline-block;height:48px;left:0;line-height:48px;margin:0 3px 0 0;position:absolute;vertical-align:top;width:48px}#a2a_modal input#a2a_copy_link_text{background-color:transparent;border:0;color:#2A2A2A;cursor:pointer;font:inherit;height:48px;left:62px;max-width:initial;min-height:auto;padding:0;position:relative;width:564px;width:calc(100% - 76px)}#a2a_copy_link_copied{background-color:#0166ff;color:#fff;display:none;font:inherit;font-size:16px;margin-top:1px;padding:3px 8px}@media (forced-colors:active){.a2a_color_buttons a,.a2a_svg{forced-color-adjust:none}}@media (prefers-color-scheme:dark){.a2a_menu a,.a2a_menu a.a2a_i,.a2a_menu a.a2a_i:visited,.a2a_menu a.a2a_more,i.a2a_i{border-color:#2a2a2a!important;color:#fff!important}.a2a_menu a.a2a_i:active,.a2a_menu a.a2a_i:focus,.a2a_menu a.a2a_i:hover,.a2a_menu a.a2a_more:active,.a2a_menu a.a2a_more:focus,.a2a_menu a.a2a_more:hover,.a2a_menu_find_container{border-color:#444!important;background-color:#444!important}.a2a_menu:not(.a2a_thanks){background-color:#2a2a2a;border-color:#2a2a2a}.a2a_menu_find{color:#fff!important}.a2a_menu label.a2a_s_find svg{background-color:transparent!important}.a2a_menu label.a2a_s_find svg path{fill:#fff!important}.a2a_full{box-shadow:#00000066 0 0 20px 10px}.a2a_overlay{background-color:#373737eb}}@media print{.a2a_floating_style,.a2a_menu,.a2a_overlay{visibility:hidden}}@keyframes a2aFadeIn{from{opacity:0}to{opacity:1}}.a2a_starting{opacity:0}.a2a_starting.a2a_full,.a2a_starting.a2a_modal{transform:scale(.8)}@media (max-width:639px){.a2a_full{border-radius:0;top:15%;left:0;margin-left:auto;width:100%}.a2a_modal{left:0;margin-left:10px;width:calc(100% - 20px)}}@media (min-width:318px) and (max-width:437px){.a2a_full .a2a_full_services .a2a_i{width:calc(50% - 18px)}}@media (max-width:317px){.a2a_full .a2a_full_services .a2a_i{width:calc(100% - 18px)}}@media (max-height:436px){.a2a_full{bottom:40px;height:auto;top:40px}}@media (max-height:550px){.a2a_modal{top:30px}}@media (max-height:360px){.a2a_modal{top:20px}.a2a_thanks>div:first-child{margin-bottom:20px}}.a2a_menu a{color:#0166FF;text-decoration:none;font:16px sans-serif-light,HelveticaNeue-Light,"Helvetica Neue Light","Helvetica Neue",Arial,Helvetica,"Liberation Sans",sans-serif;line-height:14px;height:auto;width:auto;outline:0}.a2a_menu a.a2a_i:visited,.a2a_menu a.a2a_more{color:#0166FF}.a2a_menu a.a2a_i:active,.a2a_menu a.a2a_i:focus,.a2a_menu a.a2a_i:hover,.a2a_menu a.a2a_more:active,.a2a_menu a.a2a_more:focus,.a2a_menu a.a2a_more:hover{color:#2A2A2A;border-color:#EEE;border-style:solid;background-color:#EEE;text-decoration:none}.a2a_menu label.a2a_s_find{background-size:24px;height:24px;left:8px;pointer-events:auto;position:absolute;top:7px;width:24px}.a2a_menu label.a2a_s_find svg{background-color:#FFF}.a2a_menu label.a2a_s_find svg path{fill:#CCC}#a2a_menu_container{display:inline-block}.a2a_menu_find_container{border:1px solid #CCC;border-radius:6px;padding:2px 24px 2px 0;position:relative;text-align:left}.a2a_cols_container .a2a_col1{overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}#a2a_modal input,#a2a_modal input[type=text],.a2a_menu input,.a2a_menu input[type=text]{display:block;background-image:none;box-shadow:none;line-height:100%;margin:0;outline:0;overflow:hidden;padding:0;-moz-box-shadow:none;-webkit-box-shadow:none;-webkit-appearance:none}#a2afeed_find_container input,#a2afeed_find_container input[type=text],#a2apage_find_container input,#a2apage_find_container input[type=text]{background-color:transparent;border:0;box-sizing:content-box;color:#2A2A2A;float:none;font:inherit;font-size:16px;height:28px;line-height:20px;left:38px;outline:0;margin:0;max-width:initial;min-height:initial;padding:2px 0;position:relative;width:99%}.a2a_clear{clear:both}.a2a_svg{background-repeat:no-repeat;display:block;overflow:hidden;height:32px;line-height:32px;padding:0;pointer-events:none;width:32px}.a2a_svg svg{background-repeat:no-repeat;background-position:50% 50%;border:none;display:block;left:0;margin:0 auto;overflow:hidden;padding:0;position:relative;top:0;width:auto;height:auto}a.a2a_i,i.a2a_i{display:block;float:left;border:1px solid #FFF;line-height:24px;padding:6px 8px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:132px}a.a2a_i span,a.a2a_more span{display:inline-block;overflow:hidden;vertical-align:top}a.a2a_i .a2a_svg{margin:0 6px 0 0}a.a2a_i .a2a_svg,a.a2a_more .a2a_svg{background-size:24px;height:24px;line-height:24px;width:24px}a.a2a_sss:hover{border-left:1px solid #CCC}a.a2a_more{border-bottom:1px solid #FFF;border-left:0;border-right:0;line-height:24px;margin:6px 0 0;padding:6px;-webkit-touch-callout:none}a.a2a_more span{height:24px;margin:0 6px 0 0}.a2a_kit .a2a_svg{background-repeat:repeat}.a2a_default_style a:empty,.a2a_flex_style a:empty,.a2a_floating_style a:empty,.a2a_overlay_style a:empty{display:none}.a2a_color_buttons a,.a2a_floating_style a{text-decoration:none}.a2a_default_style:not(.a2a_flex_style) a{float:left;line-height:16px;padding:0 2px}.a2a_default_style a:hover .a2a_svg,.a2a_floating_style a:hover .a2a_svg,.a2a_overlay_style a:hover .a2a_svg svg{opacity:.7}.a2a_overlay_style.a2a_default_style a:hover .a2a_svg{opacity:1}.a2a_default_style .a2a_count,.a2a_default_style .a2a_svg,.a2a_floating_style .a2a_svg,.a2a_menu .a2a_svg,.a2a_vertical_style .a2a_count,.a2a_vertical_style .a2a_svg{border-radius:4px}.a2a_default_style .a2a_counter img,.a2a_default_style .a2a_dd,.a2a_default_style .a2a_svg{float:left}.a2a_default_style .a2a_img_text{margin-right:4px}.a2a_default_style .a2a_divider{border-left:1px solid #000;display:inline;float:left;height:16px;line-height:16px;margin:0 5px}.a2a_kit a{cursor:pointer;transition:none}.a2a_floating_style{background-color:#fff;border-radius:6px;position:fixed;z-index:9999995}.a2a_overlay_style{z-index:2147483647}.a2a_floating_style,.a2a_overlay_style{animation:a2aFadeIn .2s ease-in;padding:4px}.a2a_vertical_style:not(.a2a_flex_style) a{clear:left;display:block;overflow:hidden;padding:4px}.a2a_floating_style.a2a_default_style{bottom:0}.a2a_floating_style.a2a_default_style a,.a2a_overlay_style.a2a_default_style a{padding:4px}.a2a_count{background-color:#fff;border:1px solid #ccc;box-sizing:border-box;color:#2a2a2a;display:block;float:left;font:12px Arial,Helvetica,sans-serif;height:16px;margin-left:4px;position:relative;text-align:center;width:50px}.a2a_count:after,.a2a_count:before{border:solid transparent;border-width:4px 4px 4px 0;content:"";height:0;left:0;line-height:0;margin:-4px 0 0 -4px;position:absolute;top:50%;width:0}.a2a_count:before{border-right-color:#ccc}.a2a_count:after{border-right-color:#fff;margin-left:-3px}.a2a_count span{animation:a2aFadeIn .14s ease-in}.a2a_vertical_style .a2a_counter img{display:block}.a2a_vertical_style .a2a_count{float:none;margin-left:0;margin-top:6px}.a2a_vertical_style .a2a_count:after,.a2a_vertical_style .a2a_count:before{border:solid transparent;border-width:0 4px 4px 4px;content:"";height:0;left:50%;line-height:0;margin:-4px 0 0 -4px;position:absolute;top:0;width:0}.a2a_vertical_style .a2a_count:before{border-bottom-color:#ccc}.a2a_vertical_style .a2a_count:after{border-bottom-color:#fff;margin-top:-3px}.a2a_color_buttons .a2a_count,.a2a_color_buttons .a2a_count:after,.a2a_color_buttons .a2a_count:before,.a2a_color_buttons.a2a_vertical_style .a2a_count:after,.a2a_color_buttons.a2a_vertical_style .a2a_count:before{background-color:transparent;border:none;color:#fff;float:none;width:auto}.a2a_color_buttons.a2a_vertical_style .a2a_count{margin-top:0}.a2a_flex_style{display:flex;align-items:flex-start;gap:0}.a2a_default_style.a2a_flex_style{left:0;right:0;width:100%}.a2a_vertical_style.a2a_flex_style{flex-direction:column;top:0;bottom:0}.a2a_flex_style a{display:flex;justify-content:center;flex:1;padding:4px}.a2a_flex_style.a2a_vertical_style a{flex-direction:column}.a2a_floating_style.a2a_color_buttons,.a2a_floating_style.a2a_flex_style{border-radius:0;padding:0}.a2a_floating_style.a2a_default_style.a2a_flex_style{bottom:0}.a2a_kit.a2a_flex_style .a2a_counter img,.a2a_kit.a2a_flex_style .a2a_dd,.a2a_kit.a2a_flex_style .a2a_svg{float:none}.a2a_nowrap{white-space:nowrap}.a2a_note{margin:0 auto;padding:9px;font-size:12px;text-align:center}.a2a_note .a2a_note_note{margin:0;color:#2A2A2A}.a2a_wide a{display:block;margin-top:3px;border-top:1px solid #EEE;text-align:center}.a2a_label{position:absolute!important;clip-path:polygon(0px 0px,0px 0px,0px 0px);-webkit-clip-path:polygon(0px 0px,0px 0px,0px 0px);overflow:hidden;height:1px;width:1px}.a2a_kit,.a2a_menu,.a2a_modal,.a2a_overlay{-ms-touch-action:manipulation;touch-action:manipulation;outline:0}.a2a_dd{-webkit-user-drag:none}.a2a_dd img{border:0}.a2a_button_facebook_like iframe{max-width:none}</style></head>
+
+<body class="wp-singular post-template-default single single-post postid-86 single-format-standard wp-embed-responsive wp-theme-twentytwelve custom-font-enabled gdpr-infobar-visible">
+<div id="page" class="hfeed site">
+	<a class="screen-reader-text skip-link" href="#content">Saltar al contenido</a>
+	<header id="masthead" class="site-header">
+		<hgroup>
+					<h1 class="site-title"><a href="https://blogs.upm.es/pasd/" rel="home">Procesado Avanzado de Señales y Datos</a></h1>
+			<h2 class="site-description">Otro sitio más de UPM [Blogs]</h2>
+		</hgroup>
+
+		<nav id="site-navigation" class="main-navigation">
+			<button class="menu-toggle" aria-controls="twentytwelve-page-list-menu" aria-expanded="false">Menú</button>
+			<div class="nav-menu"><ul id="twentytwelve-page-list-menu">
+<li><a href="https://blogs.upm.es/pasd/">Inicio</a></li></ul></div>
+		</nav>
+
+			</header>
+
+	<div id="main" class="wrapper">
+
+	<div id="primary" class="site-content">
+		<div id="content" role="main">
+
+			
+				
+	<article id="post-86" class="post-86 post type-post status-publish format-standard hentry category-curso-2022-23">
+				<header class="entry-header">
+			
+						<h1 class="entry-title">Matching text-image pairs by using CLIP</h1>
+								</header>
+
+				<div class="entry-content">
+			
+<p><strong>1. Introduction</strong></p>
+
+
+
+<p>CLIP, which stands for “Contrastive Language–Image Pretraining”, is 
+an artificial intelligence model developed by OpenAI that has been 
+trained to understand images and text together. This allows it to 
+perform tasks involving a combination of text and image processing, 
+which sets it apart from many other AI models.</p>
+
+
+
+<p>The CLIP model is trained using a method known as “contrastive 
+learning”. This approach involves presenting the model with pairs of 
+images and text that correspond to each other (for example, a picture of
+ a dog and the phrase “a dog”) and pairs that do not correspond (for 
+example, the same picture of a dog and the phrase “a coffee cup”). The 
+model’s goal is to learn to correctly associate images with their 
+corresponding text and reject incorrect pairings.</p>
+
+
+
+<p>One of the most interesting aspects of CLIP is that, unlike many AI 
+models that are trained for a specific task, CLIP is capable of 
+performing a wide range of text and image processing tasks without any 
+additional training. This is due to its ability to understand and 
+generate representations of images and text in a shared feature space.</p>
+
+
+
+<p>For instance, you could ask CLIP to classify images according to a 
+variety of text descriptions, generate descriptive text for an image, or
+ find the most relevant image for a given phrase. This makes it highly 
+versatile and useful for a variety of applications.</p>
+
+
+
+<p><strong>2. State of the art</strong></p>
+
+
+
+<p>CLIP model strongly relies on three modern concepts of Artificial 
+Intelligence: Firstly, it uses zero-shot transfer learning so that the 
+model, that has been trained on one task, can later be applied to a 
+different, unseen task without any task-specific training data. 
+Secondly, it uses natural language supervision (human-generated natural 
+language annotations or labels to guide and train machine learning 
+models rather than a set of predefined features) and lastly, it is also a
+ multimodal model since it processes data from two different modalities:
+ text and image.&nbsp;</p>
+
+
+
+<p>These disciplines had been explored for the last decade with the main
+ goal of achieving generalised predictions of unseen object categories. 
+One of the most important insights on this line of investigation was 
+leveraged in 2013 by Richer Socher and co-authors at Stanford: They 
+trained a model on CIFAR-10 dataset that was able to make predictions in
+ a word embedding space that was able to predict two unseen classes. In 
+that same year, DeVISE successfully scaled this approach and showcased 
+the feasibility of fine-tuning an ImageNet model, enabling accurate 
+predictions of objects beyond the original 1000 classes in the training 
+set [2].&nbsp;</p>
+
+
+
+<p>One of the most inspiring works for CLIP was made by Ang Li and his 
+co-authors at FAIR in 2016 [3]. They made a paper in which they 
+showcased the use of natural language supervision to enable zero-shot 
+transfer learning on popular computer vision classification datasets, 
+including the well-known ImageNet dataset. By fine-tuning an ImageNet 
+CNN with the help of textual information from titles, descriptions, and 
+tags of a vast collection of Flickr photos (around 30 million), they 
+successfully expanded the model’s ability to predict a broader range of 
+visual concepts (visual n-grams). As a result, they achieved an 
+impressive accuracy of 11.5% on zero-shot ImageNet classification.</p>
+
+
+
+<p>CLIP belongs to a line of investigation about learning visual 
+representations from natural language supervision. Most of the papers 
+that study this concept use modern AI techniques and architectures such 
+as transformers, autoregressive language modelling, masked language 
+modelling and other approaches of contrastive learning in different 
+fields such as medical imaging [2].</p>
+
+
+
+<p><strong>3. Development</strong></p>
+
+
+
+<p><strong>3.1. Architecture</strong></p>
+
+
+
+<p>According to [6], CLIP is based on two different encoders to codify the images and text, respectively:</p>
+
+
+
+<ul class="wp-block-list">
+<li>For the image encoder they proposed two different architectures, initially a <strong>ResNet-50</strong> was used (along with other modifications for this base architecture), and a Visual Transformer (<strong>ViT</strong>). The final architecture to use was ViT due to the better efficiency shown than ResNet (up to 3 times more efficient).</li>
+
+
+
+<li>For the text encoder they used a transformer model, with some modifications, following the base architecture from <strong>GPT-2 </strong>([8])</li>
+</ul>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img fetchpriority="high" decoding="async" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/ViT.png" alt="" class="wp-image-149" width="436" height="231" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/ViT.png 512w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/ViT-300x159.png 300w" sizes="(max-width: 436px) 100vw, 436px"><figcaption class="wp-element-caption"><em>ViT Architecture [7]</em></figcaption></figure></div>
+
+
+<p>These two Transformers are used jointly to get powerful image and 
+text representations, and be able to relate both representation types.</p>
+
+
+
+<p><strong>3.2. Contrastive Pre-training</strong></p>
+
+
+
+<p>Once we have explained the architecture, we now explain how to train both encoders (<strong>Contrastive Pretraining, </strong>[4]):</p>
+
+
+
+<ol class="wp-block-list">
+<li>Select “N” images and “N” text describing each one of the images, respectively, as a batch</li>
+
+
+
+<li>Codify the different images and texts with their respective encoder</li>
+
+
+
+<li>To evaluate the similarity of each pair possible between image and text, calculate the <strong>cosine similarity</strong>
+ between each pair image/text to get a matrix [N x N] representing the 
+cross-similarity between the images and texts. A higher value means a 
+greater similarity (semantic) between the corresponding image and text, 
+while a lower value means the opposite</li>
+</ol>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img decoding="async" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/CLIP-Contrastive-Pre-training.png" alt="" class="wp-image-150" width="399" height="284" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/CLIP-Contrastive-Pre-training.png 512w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/CLIP-Contrastive-Pre-training-300x213.png 300w" sizes="(max-width: 399px) 100vw, 399px"><figcaption class="wp-element-caption"><em>Image from CLIP: Connecting Text and Images, OpenAI&nbsp; [2]</em></figcaption></figure></div>
+
+
+<p>The objective is to maximize the values of the main diagonal 
+(representing the pairs with the corresponding image/text) and minimize 
+the other values. With this approach, we can describe the i-th picture 
+only using the i-th description and not other independent descriptions. 
+In the next image, we show the cosine similarity between text and image 
+features for 8 images from the skimage dataset. As we have just 
+mentioned, it can be clearly seen that this matrix adapts to a 
+diagonal-matrix [5].</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img decoding="async" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Cosine_Matrix.png" alt="" class="wp-image-151" width="512" height="393" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Cosine_Matrix.png 512w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Cosine_Matrix-300x230.png 300w" sizes="(max-width: 512px) 100vw, 512px"></figure></div>
+
+
+<p>This approach allows us to train both text and image encoder to make better representations for the next point: <strong>Zero-Shot Learning.</strong></p>
+
+
+
+<p><strong>3.3. Case of use: Zero-Shot Learning</strong></p>
+
+
+
+<p>Once we have explained the architecture, we put some examples to 
+explain the different parts of the model. First of all, we need an image
+ and different texts describing the image, some more detailed, others 
+not, even wrong descriptions.</p>
+
+
+
+<p>For the codification of the text and image, where use for both 
+transformers (for image, a Vision Transformer; and for text, other 
+similar to the used for image) already pre-trained with the “Conceptual 
+Captions” dataset (a very large dataset with images of various web 
+sources) for explication purposes.</p>
+
+
+
+<p><strong>3.4. Limitations</strong></p>
+
+
+
+<p>As we will see, the model shows a high potential to make a 
+relationship between text features and image features, but also we can 
+appreciate a little gap between the performance between using “prepared”
+ data and real data due to these images can have noisy sections, 
+affecting the representation produced by the encoder, giving less 
+accurate predictions as a result.&nbsp;</p>
+
+
+
+<p>The performance also depends on the used dataset. According to [1], 
+if we use a lineal classification on the ImageNet Dataset using the CLIP
+ features, the CLIP accuracy has a 10% increment in the results, but on 
+average, using other datasets, the performance is worse, so we can 
+conclude that there is an implicit “bias” depending on the dataset used.</p>
+
+
+
+<p>The CLIP model used is focused on physical object recognition (chair,
+ cat, tree…), but for other tasks more abstract like counting the 
+different objects on an image (three cars, six chairs…); and more 
+complex like predicting the depth of each object or making a facial 
+emotion recognizer to predict the respective text according to the 
+proposed image.</p>
+
+
+
+<p>Lastly, CLIP isn’t able to generalize objects not included in the 
+pre-trained dataset (for example, using images of the dataset MNIST 
+(handwritten digits), the model’s accuracy decreases 10%), making the 
+model very sensitive to how we must describe the images for a better or 
+worse representation.</p>
+
+
+
+<p><strong>4. Results</strong></p>
+
+
+
+<p>In our case of use, we have followed two approaches:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Applying it to some random images from the public dataset CIFAR100, 
+which contains 32×32 images belonging to 100 different classes of 
+objects.</li>
+
+
+
+<li>Testing CLIP’s real-world performance selecting some images to 
+understand the behaviour of the model with images never seen by the 
+pre-trained model.&nbsp;</li>
+</ul>
+
+
+
+<p>For these 3 examples from CIFAR100, we show their top predictions, 
+where it can be seen that CLIP wrongly predicts a lion whilst the real 
+label is a lion. Nevertheless, the two following images are correctly 
+classified.</p>
+
+
+
+<pre class="wp-block-code"><code>import os
+import clip
+import torch
+from torchvision.datasets import CIFAR100
+import matplotlib.pyplot as plt
+import random
+
+# Load the model
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model, preprocess = clip.load('ViT-B/32', device)
+
+# Download the dataset
+cifar100 = CIFAR100(root=os.path.expanduser("~/.cache"), download=True, train=False)
+
+# Get 4 random images from the dataset
+id_images = random.sample(range(len(cifar100)), 3)
+
+# Apply the model to the images
+for i in id_images :
+  # Prepare the inputs
+  image, class_id = cifar100[i]
+  image_input = preprocess(image).unsqueeze(0).to(device)
+  text_inputs = torch.cat([clip.tokenize(f"a photo of a {c}") for c in cifar100.classes]).to(device)
+
+  # Calculate features
+  with torch.no_grad():
+      image_features = model.encode_image(image_input)
+      text_features = model.encode_text(text_inputs)
+
+  # Pick the top 5 most similar labels for the image
+  image_features /= image_features.norm(dim=-1, keepdim=True)
+  text_features /= text_features.norm(dim=-1, keepdim=True)
+  similarity = (100.0 * image_features @ text_features.T).softmax(dim=-1)
+  values, indices = similarity[0].topk(5)
+    
+  # Print the result
+  print("\nTop predictions:")
+  for value, index in zip(values, indices):
+      print(f"{cifar100.classes[index]:&gt;16s}: {100 * value.item():.2f}%")
+
+  # Print the original label with the image
+  print("Real label:", cifar100.classes[class_id])
+  plt.imshow(image)
+  plt.axis('off')
+  plt.show()
+
+</code></pre>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="399" height="512" data-id="154" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_CIFAR.png" alt="" class="wp-image-154" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_CIFAR.png 399w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_CIFAR-234x300.png 234w" sizes="auto, (max-width: 399px) 100vw, 399px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="390" height="512" data-id="152" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_CIFAR.png" alt="" class="wp-image-152" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_CIFAR.png 390w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_CIFAR-229x300.png 229w" sizes="auto, (max-width: 390px) 100vw, 390px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="392" height="512" data-id="153" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_CIFAR.png" alt="" class="wp-image-153" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_CIFAR.png 392w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_CIFAR-230x300.png 230w" sizes="auto, (max-width: 392px) 100vw, 392px"></figure>
+</figure>
+
+
+
+<p>For some images from the internet, as it is mentioned by Nikos 
+Kafritsas [4], we show that CLIP knows how to correctly understand the 
+context and the background from a given image. This case distinguishes 
+between a dog in different scenarios.</p>
+
+
+
+<pre class="wp-block-code"><code>import torch
+import clip
+from PIL import Image
+import pandas as pd 
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model, preprocess = clip.load("ViT-B/32", device=device)
+dir_path = './images/'
+
+text_input = ["A photo of Cristiano Ronaldo", "A photo of Leo Messi", "A photo of Rauw Alejandro", \
+              "A photo of C. Tangana", "A photo of a dog", "A photo of a golden retreiver running", \
+              "A golder retriever standing", "A dog", "A dog in the beach", 
+              "A photo of a diagram", "A photo of a chair", "A photo of a table", "A photo of a banana"\
+             ]
+
+text = clip.tokenize(text_input).to(device)
+
+for img in os.listdir(dir_path):
+    original_image = Image.open(dir_path+img)
+    image = preprocess(Image.open(dir_path+img)).unsqueeze(0).to(device)
+    
+    with torch.no_grad():
+        image_features = model.encode_image(image)
+        text_features = model.encode_text(text)
+
+        logits_per_image, logits_per_text = model(image, text)
+        probs = logits_per_image.softmax(dim=-1).cpu().numpy()
+    
+    indices = np.argsort(probs[0])[-5:]
+    values = probs[0][indices]
+    
+    # Print the result
+    print("Image:", img)
+    plt.imshow(original_image)
+    plt.axis('off')
+    plt.show()
+    print("\nTop predictions:")
+    for value, index in zip(values, indices):
+        print(f"\t{text_input[index]:}: {100 * value.item():.2f}%")
+    print("\n",'-'*15, "\n")
+</code></pre>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-2 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="510" height="512" data-id="156" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_Real.png" alt="" class="wp-image-156" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_Real.png 510w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_Real-300x300.png 300w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example1_Real-150x150.png 150w" sizes="auto, (max-width: 510px) 100vw, 510px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="474" height="512" data-id="158" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_Real.png" alt="" class="wp-image-158" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_Real.png 474w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example3_Real-278x300.png 278w" sizes="auto, (max-width: 474px) 100vw, 474px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="478" height="512" data-id="157" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_Real.png" alt="" class="wp-image-157" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_Real.png 478w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/Example2_Real-280x300.png 280w" sizes="auto, (max-width: 478px) 100vw, 478px"></figure>
+</figure>
+
+
+
+<p>We also show the results on some other different tasks like 
+recognizing a banana, a chair or something more abstract like a diagram,
+ completing it without any difficulty.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-3 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="794" height="788" data-id="162" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/banana_test-1.png" alt="" class="wp-image-162" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/banana_test-1.png 794w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/banana_test-1-300x298.png 300w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/banana_test-1-150x150.png 150w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/banana_test-1-768x762.png 768w" sizes="auto, (max-width: 794px) 100vw, 794px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="798" height="700" data-id="163" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/diagram_test-1.png" alt="" class="wp-image-163" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/diagram_test-1.png 798w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/diagram_test-1-300x263.png 300w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/diagram_test-1-768x674.png 768w" sizes="auto, (max-width: 798px) 100vw, 798px"></figure>
+</figure>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/chair_test-1.png" alt="" class="wp-image-169" width="271" height="396"></figure></div>
+
+
+<p>Moreover, we have tested by ourselves the limitations mentioned 
+(celebrity-recognition, hand-written digits, facial emotions and 
+counting objects) [6]&nbsp; and they all struggle to complete the task 
+correctly.</p>
+
+
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-4 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="310" height="512" data-id="167" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/number_8.png" alt="" class="wp-image-167" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/number_8.png 310w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/number_8-182x300.png 182w" sizes="auto, (max-width: 310px) 100vw, 310px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="378" height="512" data-id="166" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/cristiano_ronaldo-1.png" alt="" class="wp-image-166" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/cristiano_ronaldo-1.png 378w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/cristiano_ronaldo-1-221x300.png 221w" sizes="auto, (max-width: 378px) 100vw, 378px"></figure>
+
+
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="436" height="512" data-id="168" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/man-criying.png" alt="" class="wp-image-168" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/man-criying.png 436w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/man-criying-255x300.png 255w" sizes="auto, (max-width: 436px) 100vw, 436px"></figure>
+</figure>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/4_cars-1.png" alt="" class="wp-image-170" width="357" height="308" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/4_cars-1.png 512w, Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/4_cars-1-300x259.png 300w" sizes="auto, (max-width: 357px) 100vw, 357px"></figure></div>
+
+
+<p><strong>5. Discussion</strong></p>
+
+
+
+<p>As we have seen in the previous examples, CLIP model is a powerful 
+tool for understanding and connecting text and images, with the ability 
+to comprehend context and perform tasks such as automatic image 
+labelling and text-image pairing. However, it may have limitations and 
+poorer performance in tasks that involve a deeper level of 
+understanding, such as sentiment detection, getting the exact number of 
+objects that are in an image, or generating images from text instead of 
+text from images. It is important to consider these strengths and 
+limitations when applying CLIP in different scenarios and tasks.</p>
+
+
+
+<p></p>
+
+
+
+<p><strong>Bibliography</strong></p>
+
+
+
+<p>[1] R. Taori, A. Dave, V. Shankar, N. Carlini, B. Recht, and L. 
+Schmidt, “Measuring robustness to natural distribution shifts in image 
+classification,” arXiv [cs.LG], 2020.</p>
+
+
+
+<p>[2] <em>Clip: Connecting text and images</em> (2021) <em>CLIP: Connecting text and images</em>. Available at: <a href="https://openai.com/research/clip">https://openai.com/research/clip </a>(Accessed: 10 June 2023).&nbsp;</p>
+
+
+
+<p>[3] A. Li, A. Jabri, A. Joulin, and L. van der Maaten, “Learning visual N-grams from web data,” arXiv [cs.CV], 2016.</p>
+
+
+
+<p>[4] N. Kafritsas, “CLIP: The Most Influential AI Model From OpenAI — 
+And How To Use It,” Towards Data Science, 26-Sep-2022. [Online]. 
+Available: <a href="https://towardsdatascience.com/clip-the-most-influential-ai-model-from-openai-and-how-to-use-it-f8ee408958b1">https://towardsdatascience.com/clip-the-most-influential-ai-model-from-openai-and-how-to-use-it-f8ee408958b1</a>. [Accessed: 10-Jun-2023].</p>
+
+
+
+<p>[5] Underwood, T., <em>Exploring CLIP</em>. Available at: <a href="https://colab.research.google.com/github/tedunderwood/is417/blob/main/labs/8ImagesOct19/Exploring%20CLIP.ipynb#scrollTo=iQqUfB6-_R5u">https://
+colab.research.google.com/github/tedunderwood/is417/blob/main/
+labs/8ImagesOct19/Exploring%20CLIP.ipynb#scrollTo=iQqUfB6-_R5u</a> (Accessed: 10 June 2023).&nbsp;</p>
+
+
+
+<p>[6] A. Radford et al., “Learning transferable visual models from natural language supervision,” arXiv [cs.CV], 2021.</p>
+
+
+
+<p>[7] A. Dosovitskiy et al., “An image is worth 16×16 words: Transformers for image recognition at scale,” arXiv [cs.CV], 2020.</p>
+
+
+
+<p>[8] A. Radford, J. Wu, R. Child, D. Luan, D. Amodei, and I. 
+Sutskever, “Language Models are Unsupervised Multitask Learners,” 
+Cloudfront.net. [Online]. Available: <a href="https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf.">https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf. </a>[Accessed: 10-Jun-2023].</p>
+ 
+<div class="wp-biographia-container-top" style="background-color: #FFFFFF; border-top: 4px solid #000000;"><div class="wp-biographia-pic" style="height:100px; width:100px;"><img alt="" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/ba78e0a16cd35f5a331614cdd3a69e7818f8295be58558f25759e86f31fd.png" srcset="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/ba78e0a16cd35f5a331614cdd3a69e7818f8295be58558f25759e86f_002.png 2x" class="wp-biographia-avatar avatar-100 photo" height="100" width="100"></div><div class="wp-biographia-text"><h3>About <a href="https://blogs.upm.es/pasd/author/rjvillen/" title=" "> </a></h3><p></p><div class="wp-biographia-links"><small><ul class="wp-biographia-list wp-biographia-list-text"><li><a href="mailto:r.jvillen@alumnos.upm.es" target="_self" title="Send   Mail" class="wp-biographia-link-text">Mail</a></li> | <li><a href="https://blogs.upm.es/pasd/author/rjvillen/" target="_self" title="More Posts By  " class="wp-biographia-link-text">More Posts(1)</a></li></ul></small></div></div></div>
+<div class="addtoany_share_save_container addtoany_content addtoany_content_bottom"><div class="a2a_kit a2a_kit_size_32 addtoany_list" data-a2a-url="https://blogs.upm.es/pasd/2023/06/12/matching-text-image-pairs-by-using-clip/" data-a2a-title="Matching text-image pairs by using CLIP" style="line-height: 32px;"><a class="a2a_button_facebook" href="https://blogs.upm.es/#facebook" title="Facebook" rel="nofollow noopener" target="_blank"><span class="a2a_svg a2a_s__default a2a_s_facebook" style="background-color: rgb(8, 102, 255);"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#fff" d="M28 16c0-6.627-5.373-12-12-12S4 9.373 4 16c0 5.628 3.875 10.35 9.101 11.647v-7.98h-2.474V16H13.1v-1.58c0-4.085 1.849-5.978 5.859-5.978.76 0 2.072.15 2.608.298v3.325c-.283-.03-.775-.045-1.386-.045-1.967 0-2.728.745-2.728 2.683V16h3.92l-.673 3.667h-3.247v8.245C23.395 27.195 28 22.135 28 16"></path></svg></span><span class="a2a_label">Facebook</span></a><a class="a2a_button_mastodon" href="https://blogs.upm.es/#mastodon" title="Mastodon" rel="nofollow noopener" target="_blank"><span class="a2a_svg a2a_s__default a2a_s_mastodon" style="background-color: rgb(99, 100, 255);"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#fff" d="M26.5 12.187c0-4.887-3.198-6.319-3.198-6.319-1.575-.782-4.39-1.097-7.302-1.116-2.864 0-5.65.334-7.264 1.069-.029 0-3.236 1.431-3.236 6.366v3.819c.115 4.772.878 9.478 5.288 10.652 1.69.46 3.443.653 5.193.573a10.4 10.4 0 0 0 3.99-.907l-.086-1.861a12.8 12.8 0 0 1-3.885.515c-2.024-.067-4.171-.22-4.496-2.71a5 5 0 0 1-.048-.698c1.485.332 2.996.533 4.515.602a25.6 25.6 0 0 0 4.468-.267c2.863-.335 5.278-2.072 5.584-3.656a37.5 37.5 0 0 0 .477-6.062m-3.77 6.29h-2.35v-5.726c0-1.213-.506-1.824-1.527-1.824s-1.69.726-1.69 2.167v3.14h-2.329v-3.197c0-1.441-.563-2.167-1.69-2.167-1.125 0-1.526.611-1.526 1.823v5.728h-2.3v-5.9a4.28 4.28 0 0 1 .954-2.863 3.24 3.24 0 0 1 2.51-1.07 3.03 3.03 0 0 1 2.711 1.375l.582.955.583-.955a3.03 3.03 0 0 1 2.71-1.374 3.24 3.24 0 0 1 2.51 1.069c.656.807.995 1.825.955 2.864l-.105 5.956Z"></path></svg></span><span class="a2a_label">Mastodon</span></a><a class="a2a_button_email" href="https://blogs.upm.es/#email" title="Email" rel="nofollow noopener" target="_blank"><span class="a2a_svg a2a_s__default a2a_s_email" style="background-color: rgb(136, 137, 144);"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="#fff" d="M27 21.775v-9.9s-10.01 6.985-10.982 7.348C15.058 18.878 5 11.875 5 11.875v9.9c0 1.375.293 1.65 1.65 1.65h18.7c1.393 0 1.65-.242 1.65-1.65m-.017-11.841c0-1.002-.291-1.359-1.633-1.359H6.65c-1.38 0-1.65.429-1.65 1.43l.016.154s9.939 6.842 11 7.216C17.14 16.941 27 10.005 27 10.005z"></path></svg></span><span class="a2a_label">Email</span></a><a class="a2a_dd addtoany_share_save addtoany_share" href="https://www.addtoany.com/share#url=https%3A%2F%2Fblogs.upm.es%2Fpasd%2F2023%2F06%2F12%2Fmatching-text-image-pairs-by-using-clip%2F&amp;title=Matching%20text-image%20pairs%20by%20using%20CLIP"><span class="a2a_svg a2a_s__default a2a_s_a2a" style="background-color: rgb(1, 102, 255);"><svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g fill="#FFF"><path d="M14 7h4v18h-4z"></path><path d="M7 14h18v4H7z"></path></g></svg></span><span class="a2a_label a2a_localize" data-a2a-localize="inner,Share">Compartir</span></a></div></div>					</div>
+		
+		<footer class="entry-meta">
+			Esta entrada fue publicada en <a href="https://blogs.upm.es/pasd/category/curso-2022-23/" rel="category tag">Curso 2022/23</a> el <a href="https://blogs.upm.es/pasd/2023/06/12/matching-text-image-pairs-by-using-clip/" title="14:40" rel="bookmark"><time class="entry-date" datetime="2023-06-12T14:40:25+00:00">12 de junio de 2023</time></a><span class="by-author"> por <span class="author vcard"><a class="url fn n" href="https://blogs.upm.es/pasd/author/rjvillen/" title="Ver todas las entradas de rjvillen" rel="author">rjvillen</a></span></span>.								</footer>
+	</article>
+
+				<nav class="nav-single">
+					<h3 class="assistive-text">Navegación de entradas</h3>
+					<span class="nav-previous"><a href="https://blogs.upm.es/pasd/2023/06/11/deteccion-de-covid-19-en-radiografias-de-torax-basada-en-transfer-learning-aprovechando-redes-neuronales-profundas-para-un-diagnostico-preciso/" rel="prev"><span class="meta-nav">←</span>
+ Detección de COVID-19 en Radiografías de Tórax basada en Transfer 
+Learning: Aprovechando Redes Neuronales Profundas para un diagnóstico 
+preciso.</a></span>
+					<span class="nav-next"><a href="https://blogs.upm.es/pasd/2023/06/12/blog/" rel="next">INFERENCIA APROXIMADA Y REDES BAYESIANAS <span class="meta-nav">→</span></a></span>
+				</nav>
+
+				
+<div id="comments" class="comments-area">
+
+	
+	
+	
+</div>
+
+			
+		</div>
+	</div>
+
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="block-2" class="widget widget_block widget_search"><form role="search" method="get" action="https://blogs.upm.es/pasd/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search"><label class="wp-block-search__label" for="wp-block-search__input-5">Buscar</label><div class="wp-block-search__inside-wrapper "><input class="wp-block-search__input" id="wp-block-search__input-5" placeholder="" type="search" name="s" required=""><button aria-label="Buscar" class="wp-block-search__button wp-element-button" type="submit">Buscar</button></div></form></aside><aside id="block-3" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow"><h2 class="wp-block-heading">Entradas recientes</h2><ul class="wp-block-latest-posts__list wp-block-latest-posts"><li><a class="wp-block-latest-posts__post-title" href="https://blogs.upm.es/pasd/2025/05/25/evaluacion-de-la-fidelidad-del-iris-en-imagenes-gan-mediante-segmentacion-e-iou/">Evaluación de la fidelidad del iris en imágenes GAN mediante segmentación e IoU</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://blogs.upm.es/pasd/2025/05/24/el-mecanismo-de-atencion-y-la-transferencia-de-estilos-en-transfromers-2/">El mecanismo de atención&nbsp;y la transferencia de estilos en transfromers</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://blogs.upm.es/pasd/2025/05/24/explorando-espacios-de-representacion-transferencia-y-aprendizaje-en-modelos-de-lenguaje/">Explorando espacios de representación: transferencia y aprendizaje en modelos de lenguaje</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://blogs.upm.es/pasd/2025/05/16/generacion-de-rostros-humanos-con-dcgans/">Generación de rostros humanos con DCGANs</a></li>
+<li><a class="wp-block-latest-posts__post-title" href="https://blogs.upm.es/pasd/2025/05/15/generative-adversarial-networks-gans-que-son-y-que-problemas-existen/">Generative Adversarial Networks (GAN’s); ¿Qué son y qué problemas existen?</a></li>
+</ul></div></div></aside><aside id="block-4" class="widget widget_block"><div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow"><h2 class="wp-block-heading">Comentarios recientes</h2><ol class="wp-block-latest-comments"><li class="wp-block-latest-comments__comment"><article><footer class="wp-block-latest-comments__comment-meta"><a class="wp-block-latest-comments__comment-author" href="https://wordpress.org/">Un comentarista de WordPress</a> en <a class="wp-block-latest-comments__comment-link" href="https://blogs.upm.es/pasd/2021/10/14/hola-mundo/#comment-1">¡Hola, mundo!</a></footer></article></li></ol></div></div></aside>		</div>
+		</div>
+	<footer id="colophon" role="contentinfo">
+		<div class="site-info">
+									<a href="https://es.wordpress.org/" class="imprint" title="Plataforma semántica de publicación personal">
+				Funciona gracias a WordPress			</a>
+		</div>
+	</footer>
+</div>
+
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/pasd\/*"},{"not":{"href_matches":["\/pasd\/wp-*.php","\/pasd\/wp-admin\/*","\/pasd\/wp-content\/uploads\/sites\/945\/*","\/pasd\/wp-content\/*","\/pasd\/wp-content\/plugins\/*","\/pasd\/wp-content\/themes\/twentytwelve\/*","\/pasd\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+
+  
+  <aside id="moove_gdpr_cookie_info_bar" class="moove-gdpr-align-center moove-gdpr-dark-scheme gdpr_infobar_postion_bottom" aria-label="Banner de cookies RGPD" style="">
+    <div class="moove-gdpr-info-bar-container">
+      <div class="moove-gdpr-info-bar-content">
+        
+<div class="moove-gdpr-cookie-notice">
+  <p>Utilizamos cookies para ofrecerte la mejor experiencia en nuestra web.</p><p>Puedes aprender más sobre qué cookies utilizamos o desactivarlas en los <button aria-haspopup="true" data-href="#moove_gdpr_cookie_modal" class="change-settings-button">ajustes</button>.</p></div>
+        
+<div class="moove-gdpr-button-holder">
+		  <button class="mgbutton moove-gdpr-infobar-allow-all gdpr-fbo-0" aria-label="Aceptar">Aceptar</button>
+	  </div>
+      </div>
+      
+    </div>
+    
+  </aside>
+  
+  
+<style id="core-block-supports-inline-css" type="text/css">
+.wp-block-gallery.wp-block-gallery-1{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}.wp-block-gallery.wp-block-gallery-2{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}.wp-block-gallery.wp-block-gallery-3{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}.wp-block-gallery.wp-block-gallery-4{--wp--style--unstable-gallery-gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );gap:var( --wp--style--gallery-gap-default, var( --gallery-block--gutter-size, var( --wp--style--block-gap, 0.5em ) ) );}
+</style>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/custom-scripts.js" id="my-custom-script-js"></script>
+<script type="text/javascript" id="rfw-script-js-extra">
+/* <![CDATA[ */
+var rfw = {"speed":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/functions.js" id="rfw-script-js"></script>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/jquery.fitvids.js" id="rfw-script-fitvid-js"></script>
+<script type="text/javascript" id="moove_gdpr_frontend-js-extra">
+/* <![CDATA[ */
+var moove_frontend_gdpr_scripts = {"ajaxurl":"https:\/\/blogs.upm.es\/pasd\/wp-admin\/admin-ajax.php","post_id":"86","plugin_dir":"https:\/\/blogs.upm.es\/pasd\/wp-content\/plugins\/gdpr-cookie-compliance","show_icons":"all","is_page":"","ajax_cookie_removal":"false","strict_init":"1","enabled_default":{"third_party":0,"advanced":0},"geo_location":"false","force_reload":"false","is_single":"1","hide_save_btn":"false","current_user":"0","cookie_expiration":"365","script_delay":"2000","close_btn_action":"1","close_btn_rdr":"","scripts_defined":"{\"cache\":true,\"header\":\"\",\"body\":\"\",\"footer\":\"\",\"thirdparty\":{\"header\":\"\",\"body\":\"\",\"footer\":\"\"},\"advanced\":{\"header\":\"\",\"body\":\"\",\"footer\":\"\"}}","gdpr_scor":"true","wp_lang":"","wp_consent_api":"false"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/main.js" id="moove_gdpr_frontend-js"></script>
+<script type="text/javascript" id="moove_gdpr_frontend-js-after">
+/* <![CDATA[ */
+var gdpr_consent__strict = "false"
+var gdpr_consent__thirdparty = "false"
+var gdpr_consent__advanced = "false"
+var gdpr_consent__cookies = ""
+/* ]]> */
+</script>
+
+    
+  
+  
+  <dialog id="moove_gdpr_cookie_modal" class="gdpr_lightbox-hide" aria-modal="true" aria-label="Pantalla de ajustes RGPD">
+    <div class="moove-gdpr-modal-content moove-clearfix logo-position-left moove_gdpr_modal_theme_v1">
+          
+        <button class="moove-gdpr-modal-close" autofocus="" aria-label="Cerrar los ajustes de cookies RGPD">
+          <span class="gdpr-sr-only">Cerrar los ajustes de cookies RGPD</span>
+          <span class="gdpr-icon moovegdpr-arrow-close"></span>
+        </button>
+            <div class="moove-gdpr-modal-left-content">
+        
+<div class="moove-gdpr-company-logo-holder">
+  <img src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/gdpr-logo.png" alt="Procesado Avanzado de Señales y Datos" width="350" height="233" class="img-responsive">
+</div>
+        <ul id="moove-gdpr-menu">
+          
+<li class="menu-item-on menu-item-privacy_overview menu-item-selected">
+  <button data-href="#privacy_overview" class="moove-gdpr-tab-nav" aria-label="Resumen de privacidad">
+    <span class="gdpr-nav-tab-title">Resumen de privacidad</span>
+  </button>
+</li>
+
+  <li class="menu-item-strict-necessary-cookies menu-item-off">
+    <button data-href="#strict-necessary-cookies" class="moove-gdpr-tab-nav" aria-label="Cookies estrictamente necesarias">
+      <span class="gdpr-nav-tab-title">Cookies estrictamente necesarias</span>
+    </button>
+  </li>
+
+
+
+
+        </ul>
+        
+<div class="moove-gdpr-branding-cnt">
+  		<a href="https://wordpress.org/plugins/gdpr-cookie-compliance/" rel="noopener noreferrer" target="_blank" class="moove-gdpr-branding">Powered by&nbsp; <span>GDPR Cookie Compliance</span></a>
+		</div>
+      </div>
+      
+      <div class="moove-gdpr-modal-right-content">
+        <div class="moove-gdpr-modal-title">
+           
+        </div>
+        
+        <div class="main-modal-content">
+
+          <div class="moove-gdpr-tab-content">
+            
+<div id="privacy_overview" class="moove-gdpr-tab-main">
+      <span class="tab-title">Resumen de privacidad</span>
+    <div class="moove-gdpr-tab-main-content">
+  	<p>Esta web utiliza cookies para que podamos ofrecerte la mejor 
+experiencia de usuario posible. La información de las cookies se 
+almacena en tu navegador y realiza funciones tales como reconocerte 
+cuando vuelves a nuestra web o ayudar a nuestro equipo a comprender qué 
+secciones de la web encuentras más interesantes y útiles.</p>
+  	  </div>
+  
+
+</div>
+            
+  <div id="strict-necessary-cookies" class="moove-gdpr-tab-main" style="display:none">
+    <span class="tab-title">Cookies estrictamente necesarias</span>
+    <div class="moove-gdpr-tab-main-content">
+      <p>Las cookies estrictamente necesarias tiene que activarse 
+siempre para que podamos guardar tus preferencias de ajustes de cookies.</p>
+      <div class="moove-gdpr-status-bar ">
+        <div class="gdpr-cc-form-wrap">
+          <div class="gdpr-cc-form-fieldset">
+            <label class="cookie-switch" for="moove_gdpr_strict_cookies">    
+              <span class="gdpr-sr-only">Activar o desactivar las cookies</span>        
+              <input type="checkbox" aria-label="Cookies estrictamente necesarias" value="check" name="moove_gdpr_strict_cookies" id="moove_gdpr_strict_cookies">
+              <span class="cookie-slider cookie-round gdpr-sr" data-text-enable="Activado" data-text-disabled="Desactivado">
+                <span class="gdpr-sr-label">
+                  <span class="gdpr-sr-enable">Activado</span>
+                  <span class="gdpr-sr-disable">Desactivado</span>
+                </span>
+              </span>
+            </label>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+              <div class="moove-gdpr-strict-warning-message" style="margin-top: 10px;">
+          <p>Si desactivas esta cookie no podremos guardar tus 
+preferencias. Esto significa que cada vez que visites esta web tendrás 
+que activar o desactivar las cookies de nuevo.</p>
+        </div>
+        
+                                              
+    </div>
+    
+  </div>
+  
+            
+            
+            
+          </div>
+          
+        </div>
+        
+        <div class="moove-gdpr-modal-footer-content">
+          <div class="moove-gdpr-button-holder">
+			  		<button class="mgbutton moove-gdpr-modal-allow-all button-visible" aria-label="Activar todo">Activar todo</button>
+		  					<button class="mgbutton moove-gdpr-modal-save-settings button-visible" aria-label="Guardar ajustes">Guardar ajustes</button>
+				</div>
+        </div>
+        
+      </div>
+      
+
+      <div class="moove-clearfix"></div>
+
+    </div>
+    
+  </dialog>
+  
+  
+
+
+
+<div id="addtoany" style="position: static;"><div class="a2a_overlay" id="a2a_overlay"></div><div id="a2a_modal" class="a2a_modal a2a_hide" role="dialog" tabindex="-1" aria-label=""><div class="a2a_modal_body a2a_menu a2a_hide" id="a2a_copy_link"><label for="a2a_copy_link_text" id="a2a_copy_link_icon" class="a2a_svg a2a_s_link a2a_logo_color"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>Copy link</title><path fill="#FFF" d="M7.591 21.177c0-.36.126-.665.377-.917l2.804-2.804a1.235 1.235 0 0 1 .913-.378c.377 0 .7.144.97.43-.026.028-.11.11-.255.25-.144.14-.24.236-.29.29a2.82 2.82 0 0 0-.2.256 1.056 1.056 0 0 0-.177.344 1.43 1.43 0 0 0-.046.37c0 .36.126.666.377.918a1.25 1.25 0 0 0 .918.377c.126.001.251-.015.373-.047.125-.037.242-.096.345-.175.09-.06.176-.127.256-.2.1-.094.196-.19.29-.29.14-.142.223-.23.25-.254.297.28.445.607.445.984 0 .36-.126.664-.377.916l-2.778 2.79a1.242 1.242 0 0 1-.917.364c-.36 0-.665-.118-.917-.35l-1.982-1.97a1.223 1.223 0 0 1-.378-.9l-.001-.004Zm9.477-9.504c0-.36.126-.665.377-.917l2.777-2.79a1.235 1.235 0 0 1 .913-.378c.35 0 .656.12.917.364l1.984 1.968c.254.252.38.553.38.903 0 .36-.126.665-.38.917l-2.802 2.804a1.238 1.238 0 0 1-.916.364c-.377 0-.7-.14-.97-.418.026-.027.11-.11.255-.25a7.5 7.5 0 0 0 .29-.29c.072-.08.139-.166.2-.255.08-.103.14-.22.176-.344.032-.12.048-.245.047-.37 0-.36-.126-.662-.377-.914a1.247 1.247 0 0 0-.917-.377c-.136 0-.26.015-.37.046-.114.03-.23.09-.346.175a3.868 3.868 0 0 0-.256.2c-.054.05-.15.148-.29.29-.14.146-.222.23-.25.258-.294-.278-.442-.606-.442-.983v-.003ZM5.003 21.177c0 1.078.382 1.99 1.146 2.736l1.982 1.968c.745.75 1.658 1.12 2.736 1.12 1.087 0 2.004-.38 2.75-1.143l2.777-2.79c.75-.747 1.12-1.66 1.12-2.737 0-1.106-.392-2.046-1.183-2.818l1.186-1.185c.774.79 1.708 1.186 2.805 1.186 1.078 0 1.995-.376 2.75-1.13l2.803-2.81c.751-.754 1.128-1.671 1.128-2.748 0-1.08-.382-1.993-1.146-2.738L23.875 6.12C23.13 5.372 22.218 5 21.139 5c-1.087 0-2.004.382-2.75 1.146l-2.777 2.79c-.75.747-1.12 1.66-1.12 2.737 0 1.105.392 2.045 1.183 2.817l-1.186 1.186c-.774-.79-1.708-1.186-2.805-1.186-1.078 0-1.995.377-2.75 1.132L6.13 18.426c-.754.755-1.13 1.672-1.13 2.75l.003.001Z"></path></svg></label><input id="a2a_copy_link_text" type="text" title="Copy link" readonly="readonly"><div id="a2a_copy_link_copied">✓</div></div><div class="a2a_modal_body a2a_menu a2a_thanks a2a_hide" id="a2a_thanks"><div class="a2a_localize" data-a2a-localize="inner,ThanksForSharing">¡Gracias por compartir!</div></div></div><div class="a2a_menu a2a_full a2a_localize" id="a2apage_full" role="dialog" tabindex="-1" aria-label="Compartir" data-a2a-localize="title,Share"><div class="a2a_full_header"><div id="a2apage_find_container" class="a2a_menu_find_container"><label for="a2apage_find" id="a2apage_find_icon" class="a2a_svg a2a_s_find"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><title>Encuentra al instante cualquier servicio para añadir a</title><path fill="#CCC" d="M19.7 18.2l-4.5-4.5c.7-1.1 1.2-2.3 1.2-3.6 0-3.5-2.8-6.3-6.3-6.3s-6.3 2.8-6.3 6.3 2.8 6.3 6.3 6.3c1.4 0 2.6-.4 3.6-1.2l4.5 4.5c.6.6 1.3.7 1.7.2.5-.4.4-1.1-.2-1.7zm-9.6-3.6c-2.5 0-4.5-2.1-4.5-4.5 0-2.5 2.1-4.5 4.5-4.5 2.5 0 4.5 2.1 4.5 4.5s-2 4.5-4.5 4.5z"></path></svg></label><input id="a2apage_find" class="a2a_menu_find a2a_localize" type="text" autocomplete="off" title="Encuentra al instante cualquier servicio para añadir a" data-a2a-localize="title,FindAnyServiceToAddTo"></div></div><div class="a2a_full_services" id="a2apage_full_services" role="presentation"></div><div class="a2a_full_footer"><a href="https://www.addtoany.com/" title="Share Buttons" rel="noopener" target="_blank"><span class="a2a_svg a2a_s__default a2a_s_a2a a2a_logo_color"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g fill="#FFF"><path d="M14 7h4v18h-4z"></path><path d="M7 14h18v4H7z"></path></g></svg></span>AddToAny</a></div></div><div id="a2apage_dropdown" class="a2a_menu a2a_mini a2a_localize a2a_hide" tabindex="-1" aria-label="Compartir" data-a2a-localize="label,Share"><div class="a2a_mini_services" id="a2apage_mini_services"></div><div id="a2apage_cols_container" class="a2a_cols_container"><div class="a2a_col1" id="a2apage_col1"></div><div id="a2apage_2_col1" class="a2a_hide"></div><div class="a2a_clear"></div></div><div class="a2apage_wide a2a_wide"><a href="#addtoany" id="a2apage_show_more_less" class="a2a_more a2a_localize" title="Mostrar todo" data-a2a-localize="title,ShowAll"><span class="a2a_svg a2a_s__default a2a_s_a2a a2a_logo_color"><svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g fill="#FFF"><path d="M14 7h4v18h-4z"></path><path d="M7 14h18v4H7z"></path></g></svg></span><span class="a2a_localize" data-a2a-localize="inner,More">Más…</span></a></div></div><div style="height: 1px; width: 1px; position: absolute; z-index: 100000; top: 0px; visibility: hidden;"><iframe id="a2a_sm_ifr" style="height: 1px; width: 1px; border: 0px; left: 0px; top: 0px; position: absolute; z-index: 100000; display: none;" title="AddToAny Utility Frame" aria-hidden="true" src="Matching%20text-image%20pairs%20by%20using%20CLIP%20_%20Procesado%20Avanzado%20de%20Se%C3%B1ales%20y%20Datos_files/sm.html"></iframe></div></div></body></html>
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+
+Served from: blogs.upm.es @ 2025-06-29 13:47:09 by W3 Total Cache
+-->
