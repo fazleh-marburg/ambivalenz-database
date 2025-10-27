@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Objekt Informationen Eingabeformular</title>
+<style>
+body { font-family: Arial; background-color: #fafafa; padding: 40px; }
+table.property-table { width: 100%; border-collapse: collapse; margin-top: 10px; background-color: #fff; table-layout: auto; }
+table.property-table th, table.property-table td { border: 1px solid #ccc; padding: 8px; vertical-align: top; }
+.col1 { width: 25%; background-color: #f9f9f9; font-weight: bold; }
+.col2, .col4 { width: 50%; } /* Value and Name Entity columns */
+.col3 { width: 10%; text-align:center; }
+.col2 textarea, .col4 textarea { width: 100%; min-height: 50px; padding:6px; font-size:14px; border:1px solid #bbb; border-radius:4px; resize: vertical; background:#fefefe; }
+.submit-btn, .add-row-btn, .upload-btn { margin-top:20px; padding:10px 18px; border:none; border-radius:4px; font-size:16px; cursor:pointer; }
+.submit-btn { background-color:#4CAF50;color:white; }
+.submit-btn:hover{background-color:#45a049;}
+.add-row-btn{background-color:#2196F3;color:white;margin-right:10px;}
+.add-row-btn:hover{background-color:#1976D2;}
+.upload-btn{background-color:#FF9800;color:white;margin-right:10px;}
+.upload-btn:hover{background-color:#F57C00;}
+.traffic-light{width:20px;height:20px;border-radius:50%;display:inline-block;margin-left:5px;border:1px solid #999;cursor:pointer;}
+.red{background-color:red;} .yellow{background-color:yellow;} .green{background-color:green;}
+</style>
+</head>
+<body>
+
+<h2>Objekt Informationen</h2>
+
+<!-- Excel Upload Form -->
+<form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+    <label><strong>Excel-Datei hochladen (.xlsx):</strong></label>
+    <input type="file" name="file" accept=".xlsx" required>
+    <button type="submit" class="upload-btn">Excel importieren</button>
+</form>
+<hr>
+
+<!-- Main form for editing the table and saving -->
+<form method="POST" action="{{ url_for('submit') }}">
+<table class="property-table" id="propertyTable">
+<thead>
+<tr>
+<th class="col1">Property</th>
+<th class="col2">Value</th>
+<th class="col3">Status</th>
+<th class="col4">Name Entity</th>
+</tr>
+</thead>
+<tbody>
+{% for field in fields %}
+<tr>
+<td class="col1">{{ field }}</td>
+<td class="col2">
+{% set val = data.get(field,'') %}
+<textarea name="{{ field }}" rows="3" oninput="setYellow('{{ loop.index }}')">{{ val }}</textarea>
+</td>
+<td class="col3">
+<div class="traffic-light {{ colors.get(field,'red') }}" id="light{{ loop.index }}" onclick="cycleLight('{{ loop.index }}')"></div>
+<input type="hidden" name="traffic_{{ field }}" id="traffic_{{ loop.index }}" value="{{ colors.get(field,'red') }}">
+</td>
+<td class="col4">
+<textarea readonly>{{ name_entities.get(field, '') }}</textarea>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<button type="button" class="add-row-btn" onclick="addRow()">+ Neue Zeile hinzufügen</button>
+
+<!-- Button to extract named entities -->
+<button type="submit" formaction="{{ url_for('extract_entities') }}" formmethod="post" class="add-row-btn">
+    🔍 Name Entities extrahieren
+</button>
+
+<button type="submit" class="submit-btn">Daten speichern</button>
+</form>
+
+<script>
+let rowCount = {{ fields|length }};
+
+// Traffic-light functions
+function setYellow(id){
+    const light = document.getElementById("light"+id);
+    const hidden = document.getElementById("traffic_"+id);
+    if(light && hidden && hidden.value==="red"){ light.className="traffic-light yellow"; hidden.value="yellow"; }
+}
+
+function cycleLight(id){
+    const light = document.getElementById("light"+id);
+    const hidden = document.getElementById("traffic_"+id);
+    if(!light||!hidden) return;
+    const state = hidden.value;
+    if(state==="red"){ light.className="traffic-light yellow"; hidden.value="yellow"; }
+    else if(state==="yellow"){ light.className="traffic-light green"; hidden.value="green"; }
+    else{ light.className="traffic-light red"; hidden.value="red"; }
+}
+
+// Add new custom row
+function addRow(){
+    const tableBody = document.querySelector("#propertyTable tbody");
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
+    <td class="col1"><input type="text" name="custom_property_${rowCount}" placeholder="Neues Feld eingeben..."></td>
+    <td class="col2"><textarea name="custom_value_${rowCount}" placeholder="Wert eingeben..." style="width:100%; min-height:50px;"></textarea></td>
+    <td class="col3">
+        <div class="traffic-light red" id="lightcustom${rowCount}" onclick="cycleLight('custom${rowCount}')"></div>
+        <input type="hidden" name="traffic_custom_${rowCount}" id="traffic_custom${rowCount}" value="red">
+    </td>
+    <td class="col4"><textarea readonly></textarea></td>`;
+    tableBody.appendChild(newRow);
+    rowCount++;
+}
+
+// Initialize traffic lights on page load
+window.onload = ()=>{
+    document.querySelectorAll("textarea").forEach((input,i)=>{
+        const id=i+1;
+        const light=document.getElementById("light"+id);
+        const hidden=document.getElementById("traffic_"+id);
+        if(light && hidden){
+            if(input.value.trim()!=="" && hidden.value==="red"){ hidden.value="yellow"; }
+            light.className="traffic-light "+hidden.value;
+        }
+    });
+};
+</script>
+
+</body>
+</html>

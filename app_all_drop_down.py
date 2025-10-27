@@ -13,13 +13,15 @@ EXCEL_FILE = "objekt_data.xlsx"
 # Load spaCy German model
 nlp = spacy.load("de_core_news_sm")
 
-# Ensure Excel file exists
+
+# Ensure Excel exists
 if not os.path.exists(EXCEL_FILE):
     wb = Workbook()
     ws = wb.active
     ws.title = "Objekt Informationen"
     ws.append(["Property", "Value", "Status", "Name Entity"])
     wb.save(EXCEL_FILE)
+
 
 def get_field_list():
     return [
@@ -34,34 +36,37 @@ def get_field_list():
         "Erfasst von", "Erfassungsdatum", "Kommentar / Anmerkung", "Versionsgeschichte"
     ]
 
+
 def extract_name_entities(text):
     """Return list of PER, ORG, LOC entities"""
     if not text:
         return []
     doc = nlp(text)
     entities = [ent.text.strip() for ent in doc.ents if ent.label_ in ("PER", "ORG", "LOC")]
+    # remove duplicates while preserving order
     seen = []
     for e in entities:
         if e and e not in seen:
             seen.append(e)
-    return seen  # always return a list
+    return seen
+
 
 @app.route('/')
 def form():
     fields = get_field_list()
     prefill = request.args.get('prefill', '').strip()
-    data = {}
+
+    # Prefill "Titel" field if clicked from an entity
+    data = {field: "" for field in fields}
     if prefill:
-        # Prefill the first field (Titel) with clicked entity
-        data[fields[0]] = prefill
-    colors = {}
-    name_entities = {}
-    return render_template("objekt_form_buttons.html",
-                           fields=fields, data=data, colors=colors, name_entities=name_entities)
+        data["Titel"] = prefill
+
+    return render_template("objekt_form_dropdown.html",
+                           fields=fields, data=data, colors={}, name_entities={})
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    """Upload Excel and pre-fill form"""
     if 'file' not in request.files or request.files['file'].filename == '':
         return "❌ Keine Datei ausgewählt", 400
 
@@ -87,12 +92,12 @@ def upload():
         name_entities[key] = extract_name_entities(value)
 
     fields = get_field_list()
-    return render_template("objekt_form_buttons.html",
+    return render_template("objekt_form_all_ne.html",
                            fields=fields, data=data, colors=colors, name_entities=name_entities)
+
 
 @app.route('/extract_entities', methods=['POST'])
 def extract_entities():
-    """Extract named entities from all fields"""
     fields = get_field_list()
     data = {}
     colors = {}
@@ -105,12 +110,12 @@ def extract_entities():
         name_entities[key] = ne
         colors[key] = "green" if ne else "yellow" if value else "red"
 
-    return render_template("objekt_form_buttons.html",
+    return render_template("objekt_form_all_ne.html",
                            fields=fields, data=data, colors=colors, name_entities=name_entities)
+
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    """Save form data to Excel"""
     wb = Workbook()
     ws = wb.active
     ws.title = "Objekt Informationen"
@@ -125,7 +130,7 @@ def submit():
         ne = extract_name_entities(val)
         ws.append([field, val, status, ", ".join(ne)])
 
-    # Handle custom fields if any
+    # Custom rows
     for key, value in posted.items():
         if key.startswith("custom_property_"):
             index = key.split("_")[-1]
@@ -139,9 +144,11 @@ def submit():
     wb.save(EXCEL_FILE)
     return redirect(url_for('success'))
 
+
 @app.route('/success')
 def success():
     return "<h3>✅ Daten erfolgreich gespeichert!</h3>"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
