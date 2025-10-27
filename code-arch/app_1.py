@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-EXCEL_FILE = "objekt_data.xlsx"
+EXCEL_FILE = "../objekt_data.xlsx"
 
 # Ensure Excel file exists
 if not os.path.exists(EXCEL_FILE):

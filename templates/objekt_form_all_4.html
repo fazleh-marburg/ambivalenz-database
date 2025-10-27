@@ -8,9 +8,10 @@ body { font-family: Arial; background-color: #fafafa; padding: 40px; }
 table.property-table { width: 100%; border-collapse: collapse; margin-top: 10px; background-color: #fff; table-layout: auto; }
 table.property-table th, table.property-table td { border: 1px solid #ccc; padding: 8px; vertical-align: top; }
 .col1 { width: 25%; background-color: #f9f9f9; font-weight: bold; }
-.col2, .col4 { width: 50%; } /* Value and Name Entity columns */
+.col2 { width: 50%; }
 .col3 { width: 10%; text-align:center; }
-.col2 textarea, .col4 textarea { width: 100%; min-height: 50px; padding:6px; font-size:14px; border:1px solid #bbb; border-radius:4px; resize: vertical; background:#fefefe; }
+.col4 { width: 15%; }
+.col2 textarea { width: 100%; min-height: 50px; padding:6px; font-size:14px; border:1px solid #bbb; border-radius:4px; resize: vertical; }
 .submit-btn, .add-row-btn, .upload-btn { margin-top:20px; padding:10px 18px; border:none; border-radius:4px; font-size:16px; cursor:pointer; }
 .submit-btn { background-color:#4CAF50;color:white; }
 .submit-btn:hover{background-color:#45a049;}
@@ -57,9 +58,7 @@ table.property-table th, table.property-table td { border: 1px solid #ccc; paddi
 <div class="traffic-light {{ colors.get(field,'red') }}" id="light{{ loop.index }}" onclick="cycleLight('{{ loop.index }}')"></div>
 <input type="hidden" name="traffic_{{ field }}" id="traffic_{{ loop.index }}" value="{{ colors.get(field,'red') }}">
 </td>
-<td class="col4">
-<textarea readonly>{{ name_entities.get(field, '') }}</textarea>
-</td>
+<td class="col4">{{ name_entities.get(field, '') }}</td>
 </tr>
 {% endfor %}
 </tbody>
@@ -106,7 +105,7 @@ function addRow(){
         <div class="traffic-light red" id="lightcustom${rowCount}" onclick="cycleLight('custom${rowCount}')"></div>
         <input type="hidden" name="traffic_custom_${rowCount}" id="traffic_custom${rowCount}" value="red">
     </td>
-    <td class="col4"><textarea readonly></textarea></td>`;
+    <td class="col4" id="necustom${rowCount}"></td>`;
     tableBody.appendChild(newRow);
     rowCount++;
 }

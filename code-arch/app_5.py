@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-EXCEL_FILE = "objekt_data.xlsx"
+EXCEL_FILE = "../objekt_data.xlsx"
 
 # Ensure main Excel file exists
 if not os.path.exists(EXCEL_FILE):

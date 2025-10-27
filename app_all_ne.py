@@ -45,7 +45,7 @@ def extract_name_entities(text):
 @app.route('/')
 def form():
     fields = get_field_list()
-    return render_template("objekt_form_all.html", fields=fields, data={}, colors={}, name_entities={})
+    return render_template("objekt_form_all_ne.html", fields=fields, data={}, colors={}, name_entities={})
 
 @app.route('/upload', methods=['POST'])
 def upload():

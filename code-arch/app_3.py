@@ -17,135 +17,6 @@ from flask import request, render_template, redirect, url_for, flash
 from flask import Flask
 from flask_login import LoginManager
 
-from flask import Flask, render_template, request, redirect, url_for
-from openpyxl import Workbook, load_workbook
-from werkzeug.utils import secure_filename
-import os
-import csv
-import random
-import subprocess  # <-- Added to run Java command
-
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-number = random.randint(1, 100)
-category = "article"
-DIR = "/home/melahi/code/A-mediawiki-project/neo4j-upload/dataset/german/input/"
-CSV_FILE = DIR + "entity_" + category + "_" + str(number) + ".csv"  # output file
-EXCEL_FILE = "objekt_data.xlsx"  # Input Excel file
-
-# Ensure the base Excel file exists
-if not os.path.exists(EXCEL_FILE):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Objekt Informationen"
-    ws.append(["Property", "Value", "Status"])
-    wb.save(EXCEL_FILE)
-
-
-def get_field_list():
-    return [
-        "Titel", "Künstler*in/Autor*in", "Sichtbare oder genannte Personen",
-        "Entstehungsjahr", "Ort der Entstehung / Nutzung", "Gattung / Genre", "Technik",
-        "Dimensionen", "Kurzbeschreibung", "Motive / Topoi", "Narrative / Diskurse",
-        "Historischer Kontext", "Antiziganistische / Stigmatisierende Elemente",
-        "Agency", "Verknüpfung", "Narrativwandel bei Medienwechsel", "Rezeptionsweg",
-        "Sammlung / Archiv", "Provenienz", "Literatur",
-        "Ausstellungen / Aufführungen / Veröffentlichungen", "Objekt- oder Werkteil",
-        "Rechte / Lizenzen", "Digitalisat-Link/Pfad", "Metadaten-Status",
-        "Erfasst von", "Erfassungsdatum", "Kommentar / Anmerkung", "Versionsgeschichte"
-    ]
-
-
-@app.route("/add_data")
-def add_data():
-    fields = get_field_list()
-    return render_template("objekt_form_all.html", fields=fields, data={}, colors={})
-
-
-@app.route('/add_data/upload', methods=['POST'])
-def upload():
-    """Upload Excel and pre-fill form"""
-    if 'file' not in request.files:
-        return "❌ Keine Datei ausgewählt", 400
-    file = request.files['file']
-    if file.filename == '':
-        return "❌ Ungültige Datei", 400
-
-    filename = secure_filename(file.filename)
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(filepath)
-
-    wb = load_workbook(filepath)
-    ws = wb.active
-
-    data = {}
-    colors = {}
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        if not row or not row[0]:
-            continue
-        key = str(row[0]).strip()
-        value = str(row[1]).strip() if len(row) > 1 and row[1] else ""
-        status = str(row[2]).strip() if len(row) > 2 and row[2] else "red"
-        data[key] = value
-        colors[key] = status
-
-    fields = get_field_list()
-    return render_template("objekt_form.html", fields=fields, data=data, colors=colors)
-
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    """Save form data to CSV (with 'X' for empty fields and nodeType row), then run Java importer"""
-    with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-
-        # Write header row
-        writer.writerow(["Property", "Value", "Status"])
-
-        # Write form data
-        for key, value in request.form.items():
-            if key.startswith("custom_property_"):
-                index = key.split("_")[-1]
-                prop_name = value.strip() or "X"
-                prop_val = request.form.get(f"custom_value_{index}", "").strip() or "X"
-                prop_status = request.form.get(f"traffic_custom_{index}", "red") or "X"
-                writer.writerow([prop_name, prop_val, prop_status])
-            elif key.startswith("traffic_"):
-                continue
-            else:
-                prop_status = request.form.get(f"traffic_{key}", "red") or "X"
-                value = value.strip() or "X"
-                writer.writerow([key, value, prop_status])
-
-        # Add the final fixed row
-        writer.writerow(["nodeType", category, "X"])
-
-    # ✅ Run the Java import command AFTER saving the CSV
-    try:
-        result = subprocess.run(
-            ["java", "-jar", "/home/melahi/code/A-mediawiki-project/neo4j-upload/target/QuestionGrammarGenerator.jar", "CREATE"],
-            check=True,
-            capture_output=True,
-            text=True
-        )
-        print("✅ Java import successful:\n", result.stdout)
-    except subprocess.CalledProcessError as e:
-        print("❌ Java import failed:\n", e.stderr)
-        return f"<h3>❌ Fehler beim Import in Neo4j:<br>{e.stderr}</h3>", 500
-
-    return redirect(url_for('success'))
-
-
-@app.route('/success')
-def success():
-    return "<h3>✅ Daten erfolgreich in CSV gespeichert und in Neo4j importiert! (Leere Felder = 'X', letzte Zeile = nodeType/article)</h3>"
-
-
-
-
-
 app = Flask(__name__, static_url_path="/static")
 app.secret_key = "your-secret-key"
 
@@ -452,7 +323,7 @@ def Individual_page_var():
     elif section == "Inhaltliche_Beschreibung":
         try:
             with open(
-                    "templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_inh_besc.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -461,7 +332,7 @@ def Individual_page_var():
     elif section == "Semantische_Annotation":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_ann.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -470,7 +341,7 @@ def Individual_page_var():
     elif section == "Semantische_Relationen":
         try:
             with open(
-                    "templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_sem_rel.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -479,7 +350,7 @@ def Individual_page_var():
     elif section == "Technische_rechtliche":
         try:
             with open(
-                    "templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
+                    "../templates/zwei_zigeuner_tech_rech.html", "r", encoding="utf-8"
             ) as file:
                 table_html = file.read()
             content = Markup(table_html)
@@ -524,7 +395,7 @@ def Roma_Sinti():
 
     try:
         with open(
-                "templates/book_roma_all.html", "r", encoding="utf-8"
+                "../templates/book_roma_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -549,7 +420,7 @@ def Zigeuner_Bukarest():
 
     try:
         with open(
-                "templates/book_Zigeuner_Bukarest.html", "r", encoding="utf-8"
+                "../templates/book_Zigeuner_Bukarest.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -575,7 +446,7 @@ def Gewerbeordnung_1883():
 
     try:
         with open(
-                "templates/book_gewerbeordnung_1883_all.html", "r", encoding="utf-8"
+                "../templates/book_gewerbeordnung_1883_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -601,7 +472,7 @@ def Gewerbeordnung_1904():
 
     try:
         with open(
-                "templates/legal_text_gewerbeordnung_1904.html", "r", encoding="utf-8"
+                "../templates/legal_text_gewerbeordnung_1904.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -628,7 +499,7 @@ def portrait_flower_1():
 
     try:
         with open(
-                "templates/portrait_flower_1.html", "r", encoding="utf-8"
+                "../templates/portrait_flower_1.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -652,7 +523,7 @@ def portrait_person_2():
 
     try:
         with open(
-                "templates/portrait_person_2.html", "r", encoding="utf-8"
+                "../templates/portrait_person_2.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -679,7 +550,7 @@ def Weltausstellung_Paris_1900_1():
 
     try:
         with open(
-                "templates/poster_Weltausstellung_Paris_1900_1.html", "r", encoding="utf-8"
+                "../templates/poster_Weltausstellung_Paris_1900_1.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -704,7 +575,7 @@ def Weltausstellung_Paris_1900_2():
 
     try:
         with open(
-                "templates/poster_Weltausstellung_Paris_1900_2.html", "r", encoding="utf-8"
+                "../templates/poster_Weltausstellung_Paris_1900_2.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -729,7 +600,7 @@ def Nordungarn_Q1_TH():
 
     try:
         with open(
-                "templates/song_Nordungarn_Q1_TH.html", "r", encoding="utf-8"
+                "../templates/song_Nordungarn_Q1_TH.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -754,7 +625,7 @@ def article_Zigeunern_Q2_TH():
 
     try:
         with open(
-                "templates/article_Zigeunern_Q2_TH.html", "r", encoding="utf-8"
+                "../templates/article_Zigeunern_Q2_TH.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -779,7 +650,7 @@ def Zigeunerisch_Q3_TH():
 
     try:
         with open(
-                "templates/poem-Zigeunerisch_Q3_TH.html", "r", encoding="utf-8"
+                "../templates/poem-Zigeunerisch_Q3_TH.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -805,7 +676,7 @@ def Zwei_Zigeuner():
 
     try:
         with open(
-                "templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
+                "../templates/zwei_zigeuner_obj_info_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -832,7 +703,7 @@ def Ilonka():
 
     try:
         with open(
-                "templates/painting_ilonka_all.html", "r", encoding="utf-8"
+                "../templates/painting_ilonka_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -861,7 +732,7 @@ def Zigeuner():
     image_path = "private/Zigeuner.png"
     try:
         with open(
-                "templates/painting_zigeuner_all.html", "r", encoding="utf-8"
+                "../templates/painting_zigeuner_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -890,7 +761,7 @@ def Katze():
 
     try:
         with open(
-                "templates/painting_katze_all.html", "r", encoding="utf-8"
+                "../templates/painting_katze_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -916,7 +787,7 @@ def Zigeunerin():
 
     try:
         with open(
-                "templates/painting_Zigeunerin_all.html", "r", encoding="utf-8"
+                "../templates/painting_Zigeunerin_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -941,7 +812,7 @@ def Zigeunerpaar():
 
     try:
         with open(
-                "templates/painting_Zigeunerpaar_all.html", "r", encoding="utf-8"
+                "../templates/painting_Zigeunerpaar_all.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -966,7 +837,7 @@ def Person_Friedrich():
 
     try:
         with open(
-                "templates/Person_Friedrich.html", "r", encoding="utf-8"
+                "../templates/Person_Friedrich.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -990,7 +861,7 @@ def Person_Kampf():
 
     try:
         with open(
-                "templates/Person_Kampf.html", "r", encoding="utf-8"
+                "../templates/Person_Kampf.html", "r", encoding="utf-8"
         ) as file:
             table_html = file.read()
         content = Markup(table_html)
@@ -1011,31 +882,31 @@ def Person_Kampf():
 def Metadata():
     title = "Metadata Description"
     properties_1 = []
-    with open('data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_1.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_1.append((row["Property"], row["text"]))
 
     properties_2= []
-    with open('data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_2.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_2.append((row["Property"], row["text"]))
 
     properties_3 = []
-    with open('data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_3.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_3.append((row["Property"], row["text"]))
 
     properties_4 = []
-    with open('data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_4.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_4.append((row["Property"], row["text"]))
 
     properties_5 = []
-    with open('data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
+    with open('../data/newdata/description_5.csv', newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             properties_5.append((row["Property"], row["text"]))
@@ -1244,7 +1115,7 @@ def ensure_default_user():
             )
 
 def get_universities_from_csv():
-    filepath='open-data/universities.csv'
+    filepath= '../open-data/universities.csv'
     with open(filepath, newline='', encoding='utf-8') as csvfile:
         return [row[0] for row in csv.reader(csvfile)]
 
