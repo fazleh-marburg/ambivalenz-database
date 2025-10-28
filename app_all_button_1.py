@@ -22,22 +22,6 @@ if not os.path.exists(EXCEL_FILE):
     wb.save(EXCEL_FILE)
 
 def get_field_list():
-    """Read 'Property' column from Excel file, or fall back to default list."""
-    if os.path.exists(EXCEL_FILE):
-        wb = load_workbook(EXCEL_FILE)
-        ws = wb.active
-        properties = []
-
-        # Skip header row, read only first column
-        for row in ws.iter_rows(min_row=2, max_col=1, values_only=True):
-            val = str(row[0]).strip() if row[0] else ""
-            if val:
-                properties.append(val)
-
-        if properties:
-            return properties
-
-    # Fallback default list (used when Excel is empty)
     return [
         "Titel", "Künstler*in/Autor*in", "Sichtbare oder genannte Personen",
         "Entstehungsjahr", "Ort der Entstehung / Nutzung", "Gattung / Genre", "Technik",
@@ -75,9 +59,11 @@ def form():
     return render_template("objekt_form_buttons.html",
                            fields=fields, data=data, colors=colors, name_entities=name_entities)
 
+import pandas as pd
+
 @app.route('/upload', methods=['POST'])
 def upload():
-    """Upload Excel and pre-fill form using 'Property' column from the uploaded file"""
+    """Upload Excel or CSV and pre-fill form"""
     if 'file' not in request.files or request.files['file'].filename == '':
         return "❌ Keine Datei ausgewählt", 400
 
@@ -86,35 +72,44 @@ def upload():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(filepath)
 
-    wb = load_workbook(filepath)
-    ws = wb.active
+    # Try to read with pandas (auto-detects .xlsx, .xls, .csv, etc.)
+    try:
+        df = pd.read_excel(filepath, engine='openpyxl')
+    except Exception:
+        try:
+            df = pd.read_csv(filepath)
+        except Exception as e:
+            return f"❌ Fehler beim Lesen der Datei: {str(e)}", 500
 
     data = {}
     colors = {}
     name_entities = {}
-    properties = []
 
-    # Read the Property column (first column) dynamically from the uploaded file
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        if not row or not row[0]:
+    # Expecting columns: Property | Value
+    for _, row in df.iterrows():
+        if len(row) < 2:
             continue
-        key = str(row[0]).strip()
-        value = str(row[1]).strip() if len(row) > 1 and row[1] else ""
+        key = str(row.iloc[0]).strip()
+        value = str(row.iloc[1]).strip() if not pd.isna(row.iloc[1]) else ""
+        if not key:
+            continue
         data[key] = value
         colors[key] = "yellow" if value else "red"
         name_entities[key] = extract_name_entities(value)
-        properties.append(key)
 
-    # Use the read properties instead of the hardcoded list
-    fields = properties
-
-    return render_template("objekt_form_buttons.html",
-                           fields=fields, data=data, colors=colors, name_entities=name_entities)
+    fields = get_field_list()
+    return render_template(
+        "objekt_form_buttons.html",
+        fields=fields,
+        data=data,
+        colors=colors,
+        name_entities=name_entities
+    )
 
 
 @app.route('/extract_entities', methods=['POST'])
 def extract_entities():
-    """Extract named entities from all fields while keeping chosen traffic colors"""
+    """Extract named entities from all fields"""
     fields = get_field_list()
     data = {}
     colors = {}
@@ -125,13 +120,7 @@ def extract_entities():
         data[key] = value
         ne = extract_name_entities(value)
         name_entities[key] = ne
-
-        # Use the existing traffic color from the form if available
-        user_color = request.form.get(f"traffic_{key}")
-        if user_color:
-            colors[key] = user_color
-        else:
-            colors[key] = "green" if ne else "yellow" if value else "red"
+        colors[key] = "green" if ne else "yellow" if value else "red"
 
     return render_template("objekt_form_buttons.html",
                            fields=fields, data=data, colors=colors, name_entities=name_entities)

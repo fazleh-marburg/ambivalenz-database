@@ -27,9 +27,6 @@ textarea { width:100%; min-height:50px; padding:6px; font-size:14px; border:1px 
 .red{background-color:red;} .yellow{background-color:yellow;} .green{background-color:green;}
 </style>
 <script>
-let customIndex = 0;
-
-// Cycle traffic light colors
 function cycleLight(field) {
     const light = document.getElementById("light_" + field);
     const hidden = document.getElementById("traffic_" + field);
@@ -40,41 +37,11 @@ function cycleLight(field) {
     else if (current === "yellow") next = "green";
     else next = "red";
 
+    // Update the hidden value and color class
     hidden.value = next;
     light.classList.remove("red", "yellow", "green");
     light.classList.add(next);
 }
-
-// Add a new row dynamically
-function addRow() {
-    customIndex += 1;
-    const table = document.querySelector('.property-table tbody');
-    const row = document.createElement('tr');
-
-    row.innerHTML = `
-        <td class="col1">
-            <input type="text" name="custom_property_${customIndex}" placeholder="Neues Property">
-        </td>
-        <td class="col2">
-            <textarea name="custom_value_${customIndex}" rows="3"></textarea>
-        </td>
-        <td class="col3">
-            <div class="traffic-light red" id="light_custom_${customIndex}" onclick="cycleLight('custom_${customIndex}')"></div>
-            <input type="hidden" name="traffic_custom_${customIndex}" id="traffic_custom_${customIndex}" value="red">
-        </td>
-        <td class="col4"><span style="color:#999;">–</span></td>
-    `;
-    table.appendChild(row);
-}
-
-// Prevent Enter key from submitting the form in custom property input
-document.addEventListener('keydown', function(event) {
-    if(event.key === 'Enter' && event.target.name.startsWith('custom_property_')) {
-        event.preventDefault();
-        const index = event.target.name.split('_').pop();
-        document.querySelector(`textarea[name="custom_value_${index}"]`).focus();
-    }
-});
 </script>
 </head>
 <body>
@@ -119,10 +86,10 @@ document.addEventListener('keydown', function(event) {
     {% set entities = name_entities.get(field, []) %}
     {% if entities %}
         {% for e in entities %}
-            <button type="button" class="entity-button"
-                onclick="window.location='{{ url_for('form') }}?prefill={{ e | urlencode }}'">
-                {{ e }}
-            </button>
+            <form method="get" action="{{ url_for('form') }}" style="display:inline;">
+                <input type="hidden" name="prefill" value="{{ e }}">
+                <button type="submit" class="entity-button">{{ e }}</button>
+            </form>
         {% endfor %}
     {% else %}
         <span style="color:#999;">–</span>
@@ -134,7 +101,6 @@ document.addEventListener('keydown', function(event) {
 </table>
 
 <div>
-    <button type="button" class="add-row-btn" onclick="addRow()">➕ Neues Feld hinzufügen</button>
     <button type="submit" formaction="{{ url_for('extract_entities') }}" formmethod="post" class="add-row-btn">
         🔍 Name Entities extrahieren
     </button>
