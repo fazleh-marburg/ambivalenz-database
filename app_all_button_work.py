@@ -1,0 +1,175 @@
+from flask import Flask, render_template, request, redirect, url_for
+from openpyxl import Workbook, load_workbook
+from werkzeug.utils import secure_filename
+import os
+import spacy
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+EXCEL_FILE = "objekt_data.xlsx"
+
+# Load spaCy German model
+nlp = spacy.load("de_core_news_sm")
+
+# Ensure Excel file exists
+if not os.path.exists(EXCEL_FILE):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Objekt Informationen"
+    ws.append(["Property", "Value", "Status", "Name Entity"])
+    wb.save(EXCEL_FILE)
+
+def get_field_list():
+    """Read 'Property' column from Excel file, or fall back to default list."""
+    if os.path.exists(EXCEL_FILE):
+        wb = load_workbook(EXCEL_FILE)
+        ws = wb.active
+        properties = []
+
+        # Skip header row, read only first column
+        for row in ws.iter_rows(min_row=2, max_col=1, values_only=True):
+            val = str(row[0]).strip() if row[0] else ""
+            if val:
+                properties.append(val)
+
+        if properties:
+            return properties
+
+    # Fallback default list (used when Excel is empty)
+    return [
+        "Titel", "Künstler*in/Autor*in", "Sichtbare oder genannte Personen",
+        "Entstehungsjahr", "Ort der Entstehung / Nutzung", "Gattung / Genre", "Technik",
+        "Dimensionen", "Kurzbeschreibung", "Motive / Topoi", "Narrative / Diskurse",
+        "Historischer Kontext", "Antiziganistische / Stigmatisierende Elemente",
+        "Agency", "Verknüpfung", "Narrativwandel bei Medienwechsel", "Rezeptionsweg",
+        "Sammlung / Archiv", "Provenienz", "Literatur",
+        "Ausstellungen / Aufführungen / Veröffentlichungen", "Objekt- oder Werkteil",
+        "Rechte / Lizenzen", "Digitalisat-Link/Pfad", "Metadaten-Status",
+        "Erfasst von", "Erfassungsdatum", "Kommentar / Anmerkung", "Versionsgeschichte"
+    ]
+
+def extract_name_entities(text):
+    """Return list of PER, ORG, LOC entities"""
+    if not text:
+        return []
+    doc = nlp(text)
+    entities = [ent.text.strip() for ent in doc.ents if ent.label_ in ("PER", "ORG", "LOC")]
+    seen = []
+    for e in entities:
+        if e and e not in seen:
+            seen.append(e)
+    return seen  # always return a list
+
+@app.route('/')
+def form():
+    fields = get_field_list()
+    prefill = request.args.get('prefill', '').strip()
+    data = {}
+    if prefill:
+        # Prefill the first field (Titel) with clicked entity
+        data[fields[0]] = prefill
+    colors = {}
+    name_entities = {}
+    return render_template("objekt_form_buttons.html",
+                           fields=fields, data=data, colors=colors, name_entities=name_entities)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    """Upload Excel and pre-fill form using 'Property' column from the uploaded file"""
+    if 'file' not in request.files or request.files['file'].filename == '':
+        return "❌ Keine Datei ausgewählt", 400
+
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(filepath)
+
+    wb = load_workbook(filepath)
+    ws = wb.active
+
+    data = {}
+    colors = {}
+    name_entities = {}
+    properties = []
+
+    # Read the Property column (first column) dynamically from the uploaded file
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        if not row or not row[0]:
+            continue
+        key = str(row[0]).strip()
+        value = str(row[1]).strip() if len(row) > 1 and row[1] else ""
+        data[key] = value
+        colors[key] = "yellow" if value else "red"
+        name_entities[key] = extract_name_entities(value)
+        properties.append(key)
+
+    # Use the read properties instead of the hardcoded list
+    fields = properties
+
+    return render_template("objekt_form_buttons.html",
+                           fields=fields, data=data, colors=colors, name_entities=name_entities)
+
+
+@app.route('/extract_entities', methods=['POST'])
+def extract_entities():
+    """Extract named entities from all fields while keeping chosen traffic colors"""
+    fields = get_field_list()
+    data = {}
+    colors = {}
+    name_entities = {}
+
+    for key in fields:
+        value = request.form.get(key, "").strip()
+        data[key] = value
+        ne = extract_name_entities(value)
+        name_entities[key] = ne
+
+        # Use the existing traffic color from the form if available
+        user_color = request.form.get(f"traffic_{key}")
+        if user_color:
+            colors[key] = user_color
+        else:
+            colors[key] = "green" if ne else "yellow" if value else "red"
+
+    return render_template("objekt_form_buttons.html",
+                           fields=fields, data=data, colors=colors, name_entities=name_entities)
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    """Save form data to Excel"""
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Objekt Informationen"
+    ws.append(["Property", "Value", "Status", "Name Entity"])
+
+    fields = get_field_list()
+    posted = request.form
+
+    for field in fields:
+        val = posted.get(field, "").strip()
+        status = posted.get(f"traffic_{field}", "red")
+        ne = extract_name_entities(val)
+        ws.append([field, val, status, ", ".join(ne)])
+
+    # Handle custom fields if any
+    for key, value in posted.items():
+        if key.startswith("custom_property_"):
+            index = key.split("_")[-1]
+            prop_name = value.strip()
+            prop_val = posted.get(f"custom_value_{index}", "").strip()
+            prop_status = posted.get(f"traffic_custom_{index}", "red")
+            ne = extract_name_entities(prop_val)
+            if prop_name:
+                ws.append([prop_name, prop_val, prop_status, ", ".join(ne)])
+
+    wb.save(EXCEL_FILE)
+    return redirect(url_for('success'))
+
+@app.route('/success')
+def success():
+    return "<h3>✅ Daten erfolgreich gespeichert!</h3>"
+
+if __name__ == '__main__':
+    app.run(debug=True)
